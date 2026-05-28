@@ -49,14 +49,20 @@ export function Footer() {
             <h4 className="text-xs tracking-[0.2em] uppercase font-sans mb-2" style={{ color: "var(--va-ink)" }}>
               Navigation
             </h4>
-            {["Work", "Services", "About", "Contact"].map((item) => (
+            {[
+              { label: "Work", href: "/#work" },
+              { label: "Services", href: "/services" },
+              { label: "Pricing", href: "/pricing" },
+              { label: "About", href: "/#about" },
+              { label: "Contact", href: "/#contact" },
+            ].map((item) => (
               <Link
-                key={item}
-                href={`/#${item.toLowerCase()}`}
+                key={item.label}
+                href={item.href}
                 className="text-sm font-sans w-fit hover:opacity-70 transition-opacity"
                 style={{ color: "var(--va-ink-muted)" }}
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </div>

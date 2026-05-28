@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useInView, Variants, AnimatePresence } from "framer-motion";
 import { Globe, Diamond, BarChart3, ArrowUpRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 /* ─── Spring config ─────────────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 30, mass: 1.8 } as const;
@@ -23,6 +24,7 @@ const cardVariants: Variants = {
 const servicesList = [
   {
     id: "web",
+    slug: "web",
     title: "Bespoke Web Development",
     desc: "We build fast, tactile digital experiences. No templates, no bloat. Just custom Next.js architecture paired with nuanced motion design that respects your user's time and attention.",
     deliverables: ["Next.js Architecture", "WebGL / Three.js", "Framer Motion", "Headless CMS Integration"],
@@ -33,6 +35,7 @@ const servicesList = [
   },
   {
     id: "brand",
+    slug: "brand",
     title: "Identity & Branding",
     desc: "Visual systems that speak louder than words. We create iconic, minimalist identities rooted in timeless design principles.",
     deliverables: ["Brand Strategy", "Logo & Typography", "Color Systems", "Brand Guidelines"],
@@ -43,6 +46,7 @@ const servicesList = [
   },
   {
     id: "media",
+    slug: "media",
     title: "Media Buying & Strategy",
     desc: "We don't just design; we distribute. Our performance team scales your brand through highly targeted, high-converting ad campaigns across Meta and Google.",
     deliverables: ["Meta Ads Management", "Google Ads", "Creative Testing", "Conversion Rate Optimization"],
@@ -58,7 +62,9 @@ export function Services() {
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const toggleExpand = (id: string) => {
+  const toggleExpand = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
     setExpandedId(expandedId === id ? null : id);
   };
 
@@ -129,83 +135,103 @@ export function Services() {
               layout
               key={service.id}
               variants={cardVariants}
-              onClick={() => toggleExpand(service.id)}
-              className={`${service.colSpan} bg-va-surface shadow-xl relative overflow-hidden group flex flex-col justify-between p-8 md:p-12 min-h-[300px] rounded-2xl cursor-pointer`}
-              style={{ border: "1px solid var(--va-rule)" }}
+              className={`${service.colSpan} relative overflow-hidden group flex flex-col`}
             >
-              {/* Background Image */}
-              <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
-                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-105 opacity-20 dark:mix-blend-luminosity mix-blend-multiply"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-va-paper via-va-paper/90 to-va-paper/40" />
-              </div>
+              <Link
+                href={`/services/${service.slug}`}
+                className="bg-va-surface shadow-xl relative overflow-hidden flex flex-col justify-between p-8 md:p-12 min-h-[300px] rounded-2xl no-underline"
+                style={{ border: "1px solid var(--va-rule)" }}
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
+                    className="object-cover transition-transform duration-[2000ms] group-hover:scale-105 opacity-20 dark:mix-blend-luminosity mix-blend-multiply"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-va-paper via-va-paper/90 to-va-paper/40" />
+                </div>
 
-              {/* Icon & Toggle */}
-              <motion.div layout className="flex justify-between items-start mb-8 relative z-10">
-                <motion.div
-                  className="p-4 rounded-full shadow-md bg-va-paper"
-                  style={{ border: "1px solid var(--va-rule)" }}
-                >
-                  <IconComponent size={28} strokeWidth={1.5} className="text-va-ink" />
+                {/* Icon & Toggle */}
+                <motion.div layout className="flex justify-between items-start mb-8 relative z-10">
+                  <motion.div
+                    className="p-4 rounded-full shadow-md bg-va-paper"
+                    style={{ border: "1px solid var(--va-rule)" }}
+                  >
+                    <IconComponent size={28} strokeWidth={1.5} className="text-va-ink" />
+                  </motion.div>
+                  <motion.div
+                    className="p-3 rounded-full transition-colors shadow-lg"
+                    onClick={(e) => toggleExpand(e, service.id)}
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    style={{ background: "var(--va-accent)" }}
+                    aria-label={isExpanded ? "Collapse details" : "Expand details"}
+                  >
+                    <ChevronDown size={24} strokeWidth={2} style={{ color: "var(--va-paper)" }} />
+                  </motion.div>
                 </motion.div>
-                <motion.div
-                  className="p-3 rounded-full transition-colors shadow-lg"
-                  animate={{ rotate: isExpanded ? 180 : 0 }}
-                  style={{ background: "var(--va-accent)" }}
-                >
-                  <ChevronDown size={24} strokeWidth={2} style={{ color: "var(--va-paper)" }} />
-                </motion.div>
-              </motion.div>
 
-              {/* Text Content */}
-              <motion.div layout className="relative z-10 max-w-lg">
-                <motion.h3
-                  layout
-                  className="text-3xl md:text-4xl mb-4"
-                  style={{ fontFamily: "var(--font-serif)", fontWeight: 600, color: "var(--va-ink)" }}
-                >
-                  {service.title}
-                </motion.h3>
-                <motion.p layout className="font-sans text-lg leading-relaxed font-medium mb-4" style={{ color: "var(--va-ink-muted)" }}>
-                  {service.desc}
-                </motion.p>
+                {/* Text Content */}
+                <motion.div layout className="relative z-10 max-w-lg">
+                  <motion.h3
+                    layout
+                    className="text-3xl md:text-4xl mb-4"
+                    style={{ fontFamily: "var(--font-serif)", fontWeight: 600, color: "var(--va-ink)" }}
+                  >
+                    {service.title}
+                  </motion.h3>
+                  <motion.p layout className="font-sans text-lg leading-relaxed font-medium mb-4" style={{ color: "var(--va-ink-muted)" }}>
+                    {service.desc}
+                  </motion.p>
 
-                {/* Expanded Accordion Details */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                      animate={{ opacity: 1, height: "auto", marginTop: 24 }}
-                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pt-6 border-t" style={{ borderColor: "var(--va-rule)" }}>
-                        <h4 className="text-sm font-sans font-bold uppercase tracking-widest mb-4" style={{ color: "var(--va-accent)" }}>
-                          Deliverables
-                        </h4>
-                        <ul className="flex flex-col gap-2 mb-6">
-                          {service.deliverables.map((item, idx) => (
-                            <li key={idx} className="flex items-center gap-2 font-sans font-medium" style={{ color: "var(--va-ink)" }}>
-                              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--va-accent)" }} />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-va-paper" style={{ border: "1px solid var(--va-rule)" }}>
-                          <span className="font-sans text-sm font-semibold uppercase tracking-widest" style={{ color: "var(--va-ink-muted)" }}>Engagement</span>
-                          <span className="font-serif text-xl" style={{ color: "var(--va-ink)" }}>{service.price}</span>
+                  {/* Expanded Accordion Details */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 24 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pt-6 border-t" style={{ borderColor: "var(--va-rule)" }}>
+                          <h4 className="text-sm font-sans font-bold uppercase tracking-widest mb-4" style={{ color: "var(--va-accent)" }}>
+                            Deliverables
+                          </h4>
+                          <ul className="flex flex-col gap-2 mb-6">
+                            {service.deliverables.map((item, idx) => (
+                              <li key={idx} className="flex items-center gap-2 font-sans font-medium" style={{ color: "var(--va-ink)" }}>
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--va-accent)" }} />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="flex items-center justify-between p-4 rounded-xl bg-va-paper" style={{ border: "1px solid var(--va-rule)" }}>
+                            <span className="font-sans text-sm font-semibold uppercase tracking-widest" style={{ color: "var(--va-ink-muted)" }}>Engagement</span>
+                            <span className="font-serif text-xl" style={{ color: "var(--va-ink)" }}>{service.price}</span>
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Explore link — always visible */}
+                  <motion.div
+                    layout
+                    className="flex items-center gap-2 mt-6 font-sans text-sm font-semibold group/link"
+                    style={{ color: "var(--va-accent)" }}
+                  >
+                    Explore Service
+                    <motion.span
+                      className="inline-flex transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-0.5"
+                    >
+                      <ArrowUpRight size={16} strokeWidth={2.5} />
+                    </motion.span>
+                  </motion.div>
+                </motion.div>
+              </Link>
             </motion.div>
           );
         })}

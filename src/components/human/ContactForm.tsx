@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, CheckCircle2, ChevronRight, XCircle } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations/contact";
 
@@ -18,6 +19,7 @@ export function ContactForm() {
 
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
+  const searchParams = useSearchParams();
 
   const {
     register,
@@ -33,6 +35,44 @@ export function ContactForm() {
 
   const selectedService = watch("service");
   const selectedBudget = watch("budget");
+
+  // Prefill form values based on URL search query parameters (from Pricing cards & builder calculator)
+  useEffect(() => {
+    const plan = searchParams.get("plan");
+    const pkg = searchParams.get("package");
+    const message = searchParams.get("message");
+
+    if (plan) {
+      setValue("service", "web");
+      if (plan === "startup") {
+        setValue("budget", "medium");
+        setValue("details", "I am interested in the Startup web & branding package (EGP 15,000).");
+      } else if (plan === "growth") {
+        setValue("budget", "large");
+        setValue("details", "I am interested in the Growth web & branding package (EGP 30,000).");
+      }
+    } else if (pkg) {
+      setValue("service", "social");
+      if (pkg === "starter-growth") {
+        setValue("budget", "medium");
+        setValue("details", "I am interested in the Starter Growth Social Media & Ads plan (EGP 20,000/mo).");
+      } else if (pkg === "brand-scaler") {
+        setValue("budget", "large");
+        setValue("details", "I am interested in the Brand Scaler Social Media & Ads plan (EGP 45,000/mo).");
+      } else if (pkg === "corporate-e-com-elite") {
+        setValue("budget", "large");
+        setValue("details", "I am interested in the Corporate / E-Com Elite Social Media & Ads plan (EGP 85,000/mo).");
+      }
+    } else if (message) {
+      setValue("details", message);
+      if (message.includes("logo_branding") || message.includes("full_identity")) {
+        setValue("service", "branding");
+      } else {
+        setValue("service", "web");
+      }
+      setValue("budget", "large");
+    }
+  }, [searchParams, setValue]);
 
   /* ─── Navigation Handlers ──────────────────────────────────────────────── */
   const nextStep = async (fieldsToValidate: (keyof ContactFormData)[]) => {

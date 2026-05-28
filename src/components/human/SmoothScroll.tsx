@@ -69,7 +69,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         e.preventDefault();
         // Update the URL hash without triggering navigation
         window.history.pushState(null, "", hash);
-        lenis.scrollTo(hash);
+        
+        const cleanSelector = hash.split('?')[0].split('&')[0];
+        lenis.scrollTo(cleanSelector);
       }
     };
 
@@ -94,9 +96,10 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       } else {
         const hash = window.location.hash;
         if (hash && hash.length > 1) {
+          const cleanSelector = hash.split('?')[0].split('&')[0];
           setTimeout(() => {
             if (lenisRef.current) {
-              lenisRef.current.scrollTo(hash, { immediate: false, duration: 1.2 });
+              lenisRef.current.scrollTo(cleanSelector, { immediate: false, duration: 1.2 });
             }
           }, 100);
         } else {
