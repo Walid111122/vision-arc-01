@@ -1,0 +1,335 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VISIONARC — DESIGN SYSTEM TOKENS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  /* ── Shadcn / Radix passthrough ─────────────────────────────────────── */
+  --color-background:              var(--background);
+  --color-foreground:              var(--foreground);
+  --font-sans:                     var(--font-sans);
+  --font-mono:                     var(--font-geist-mono);
+  --font-heading:                  var(--font-serif);
+  --color-sidebar-ring:            var(--sidebar-ring);
+  --color-sidebar-border:          var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent:          var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary:         var(--sidebar-primary);
+  --color-sidebar-foreground:      var(--sidebar-foreground);
+  --color-sidebar:                 var(--sidebar);
+  --color-chart-5:                 var(--chart-5);
+  --color-chart-4:                 var(--chart-4);
+  --color-chart-3:                 var(--chart-3);
+  --color-chart-2:                 var(--chart-2);
+  --color-chart-1:                 var(--chart-1);
+  --color-ring:                    var(--ring);
+  --color-input:                   var(--input);
+  --color-border:                  var(--border);
+  --color-destructive:             var(--destructive);
+  --color-accent-foreground:       var(--accent-foreground);
+  --color-accent:                  var(--accent);
+  --color-muted-foreground:        var(--muted-foreground);
+  --color-muted:                   var(--muted);
+  --color-secondary-foreground:    var(--secondary-foreground);
+  --color-secondary:               var(--secondary);
+  --color-primary-foreground:      var(--primary-foreground);
+  --color-primary:                 var(--primary);
+  --color-popover-foreground:      var(--popover-foreground);
+  --color-popover:                 var(--popover);
+  --color-card-foreground:         var(--card-foreground);
+  --color-card:                    var(--card);
+  --radius-sm:   calc(var(--radius) * 0.6);
+  --radius-md:   calc(var(--radius) * 0.8);
+  --radius-lg:   var(--radius);
+  --radius-xl:   calc(var(--radius) * 1.4);
+  --radius-2xl:  calc(var(--radius) * 1.8);
+  --radius-3xl:  calc(var(--radius) * 2.2);
+  --radius-4xl:  calc(var(--radius) * 2.6);
+
+  /* ── VisionArc Brand Palette ────────────────────────────────────────── */
+  --color-va-paper:       var(--va-paper);        /* warm off-white canvas  */
+  --color-va-ink:         var(--va-ink);          /* near-black editorial   */
+  --color-va-ink-muted:   var(--va-ink-muted);    /* subdued body copy      */
+  --color-va-accent:      var(--va-accent);       /* warm terracotta        */
+  --color-va-accent-dark: var(--va-accent-dark);  /* deep terracotta hover  */
+  --color-va-rule:        var(--va-rule);         /* hairline border        */
+  --color-va-surface:     var(--va-surface);      /* slightly lifted card   */
+
+  /* ── Typography ─────────────────────────────────────────────────────── */
+  --font-serif: var(--font-serif);
+  --font-sans:  var(--font-sans);
+
+  /* ── Animations ──────────────────────────────────────────────────────── */
+  --animate-gradient-shift: gradient-shift 8s ease infinite;
+  
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ROOT — LIGHT MODE VARIABLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Shadcn neutrals — mapped to warm greys */
+  --background:           oklch(0.985 0.005 80);   /* va-paper */
+  --foreground:           oklch(0.13 0.01 50);      /* va-ink   */
+  --card:                 oklch(0.975 0.005 80);
+  --card-foreground:      oklch(0.13 0.01 50);
+  --popover:              oklch(0.985 0.005 80);
+  --popover-foreground:   oklch(0.13 0.01 50);
+  --primary:              oklch(0.13 0.01 50);
+  --primary-foreground:   oklch(0.985 0.005 80);
+  --secondary:            oklch(0.94 0.008 75);
+  --secondary-foreground: oklch(0.13 0.01 50);
+  --muted:                oklch(0.94 0.008 75);
+  --muted-foreground:     oklch(0.48 0.01 60);
+  --accent:               oklch(0.62 0.14 38);      /* terracotta */
+  --accent-foreground:    oklch(0.985 0.005 80);
+  --destructive:          oklch(0.577 0.245 27.325);
+  --border:               oklch(0.87 0.008 75);
+  --input:                oklch(0.87 0.008 75);
+  --ring:                 oklch(0.62 0.14 38);
+  --radius:               0.5rem;
+
+  /* Chart placeholders */
+  --chart-1: oklch(0.62 0.14 38);
+  --chart-2: oklch(0.50 0.10 38);
+  --chart-3: oklch(0.38 0.08 38);
+  --chart-4: oklch(0.75 0.10 70);
+  --chart-5: oklch(0.87 0.08 75);
+
+  /* Sidebar */
+  --sidebar:                    oklch(0.975 0.005 80);
+  --sidebar-foreground:         oklch(0.13 0.01 50);
+  --sidebar-primary:            oklch(0.13 0.01 50);
+  --sidebar-primary-foreground: oklch(0.985 0.005 80);
+  --sidebar-accent:             oklch(0.94 0.008 75);
+  --sidebar-accent-foreground:  oklch(0.13 0.01 50);
+  --sidebar-border:             oklch(0.87 0.008 75);
+  --sidebar-ring:               oklch(0.62 0.14 38);
+
+  /* ── VisionArc Brand ──────────────────────────────────────────────── */
+  --va-paper:       oklch(0.985 0.006 80);   /* warm white — like quality paper */
+  --va-ink:         oklch(0.130 0.010 50);   /* near-black — editorial print    */
+  --va-ink-muted:   oklch(0.480 0.010 60);   /* medium grey — body copy         */
+  --va-accent:      oklch(0.620 0.140 38);   /* terracotta — tactile warmth     */
+  --va-accent-dark: oklch(0.480 0.130 38);   /* deep terracotta — hover states  */
+  --va-rule:        oklch(0.870 0.008 75);   /* hairline rules / dividers       */
+  --va-surface:     oklch(0.960 0.008 78);   /* lifted card surface             */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.dark {
+  --background:           oklch(0.11 0.008 50);
+  --foreground:           oklch(0.95 0.005 80);
+  --card:                 oklch(0.16 0.008 50);
+  --card-foreground:      oklch(0.95 0.005 80);
+  --popover:              oklch(0.16 0.008 50);
+  --popover-foreground:   oklch(0.95 0.005 80);
+  --primary:              oklch(0.95 0.005 80);
+  --primary-foreground:   oklch(0.13 0.01 50);
+  --secondary:            oklch(0.22 0.008 50);
+  --secondary-foreground: oklch(0.95 0.005 80);
+  --muted:                oklch(0.22 0.008 50);
+  --muted-foreground:     oklch(0.62 0.008 60);
+  --accent:               oklch(0.65 0.14 38);
+  --accent-foreground:    oklch(0.11 0.008 50);
+  --destructive:          oklch(0.704 0.191 22.216);
+  --border:               oklch(1 0 0 / 10%);
+  --input:                oklch(1 0 0 / 15%);
+  --ring:                 oklch(0.65 0.14 38);
+  --chart-1: oklch(0.65 0.14 38);
+  --chart-2: oklch(0.55 0.10 38);
+  --chart-3: oklch(0.45 0.08 38);
+  --chart-4: oklch(0.75 0.10 70);
+  --chart-5: oklch(0.35 0.006 50);
+  --sidebar:                    oklch(0.16 0.008 50);
+  --sidebar-foreground:         oklch(0.95 0.005 80);
+  --sidebar-primary:            oklch(0.65 0.14 38);
+  --sidebar-primary-foreground: oklch(0.95 0.005 80);
+  --sidebar-accent:             oklch(0.22 0.008 50);
+  --sidebar-accent-foreground:  oklch(0.95 0.005 80);
+  --sidebar-border:             oklch(1 0 0 / 10%);
+  --sidebar-ring:               oklch(0.65 0.14 38);
+
+  /* ── VisionArc Brand (Fiery Red-Orange & Black) ─────────────────────── */
+  --va-paper:       oklch(0.12 0.00 0);    /* Deep black/charcoal */
+  --va-ink:         oklch(0.98 0.00 0);    /* Pure white */
+  --va-ink-muted:   oklch(0.70 0.00 0);    /* Light grey */
+  --va-accent:      oklch(0.62 0.25 35);   /* Vibrant Fiery Red-Orange */
+  --va-accent-dark: oklch(0.50 0.20 35);   /* Deeper Red-Orange */
+  --va-rule:        oklch(1 1 1 / 10%);    /* Subtle white hairline */
+  --va-surface:     oklch(1 1 1 / 4%);     /* Dark glass base */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SVG GRAIN / NOISE FILTER
+   Applied via .grain-overlay — sits fixed above all content at low opacity.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer base {
+  /* Embedded SVG grain filter using feTurbulence */
+  .grain-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: -50%;          /* oversized to prevent edge gaps */
+    width: 200%;
+    height: 200%;
+    z-index: 9999;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23grain)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    mix-blend-mode: multiply;
+  }
+
+  .dark .grain-overlay {
+    opacity: 0.055;
+    mix-blend-mode: screen;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE LAYER
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-[var(--va-paper)] text-[var(--va-ink)];
+  }
+
+  /* ── Heading typescale — Cormorant Garamond (serif) ─────────────────── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  h1 { font-size: clamp(2.8rem, 7vw, 6rem);   font-weight: 300; }
+  h2 { font-size: clamp(2rem, 5vw, 4rem);     font-weight: 300; }
+  h3 { font-size: clamp(1.4rem, 3vw, 2.25rem); font-weight: 400; }
+
+  /* ── Body copy — Inter (sans) ───────────────────────────────────────── */
+  p, li, label, input, textarea, select {
+    font-family: var(--font-sans);
+    line-height: 1.65;
+  }
+
+  /* ── Hairline rules ─────────────────────────────────────────────────── */
+  hr {
+    border-color: var(--va-rule);
+    border-top-width: 1px;
+  }
+
+  /* ── Selections ─────────────────────────────────────────────────────── */
+  ::selection {
+    background: color-mix(in srgb, var(--va-accent) 20%, transparent);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY LAYER — VisionArc helpers
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* Asymmetric text indent used in editorial headings */
+  .text-editorial {
+    font-family: var(--font-serif);
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  /* Paper card surface (Glassmorphism for elite design) */
+  .surface-card {
+    background: var(--va-surface);
+    border: 1px solid var(--va-rule);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  /* Subtle inset shadow mimicking paper depth */
+  .shadow-paper {
+    box-shadow:
+      0 1px 2px oklch(0.13 0.01 50 / 4%),
+      0 4px 12px oklch(0.13 0.01 50 / 6%),
+      inset 0 1px 0 oklch(1 0 0 / 60%);
+  }
+
+  /* Spring-physics animation preset — apply via Framer Motion, not CSS */
+  /* Documented here for reference:
+     type: "spring", stiffness: 200, damping: 20, mass: 1 */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  .text-gradient-neon {
+    background: linear-gradient(
+      270deg,
+      var(--va-accent),
+      #FF007B,
+      #00E5FF,
+      var(--va-accent)
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-shift 12s ease infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, input, textarea, select, [data-magnetic] {
+    cursor: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL INTEGRATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+html.lenis,
+html.lenis body {
+  height: auto;
+  position: relative;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
