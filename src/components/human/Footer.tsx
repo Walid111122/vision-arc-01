@@ -103,7 +103,7 @@ export function Footer() {
             &copy; {currentYear} VisionArc Agency. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="#" className="text-xs font-sans hover:underline" style={{ color: "var(--va-ink-muted)" }}>
+            <Link href="/privacy" className="text-xs font-sans hover:underline" style={{ color: "var(--va-ink-muted)" }}>
               Privacy Policy
             </Link>
             <Link href="#" className="text-xs font-sans hover:underline" style={{ color: "var(--va-ink-muted)" }}>
