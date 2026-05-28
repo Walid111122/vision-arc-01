@@ -5,6 +5,7 @@ import { motion, useInView, Variants, AnimatePresence } from "framer-motion";
 import {
   Check,
   ArrowUpRight,
+  ArrowLeft,
   ChevronDown,
   Sparkles,
   Calculator,
@@ -16,6 +17,7 @@ import {
 import Link from "next/link";
 import { Nav } from "@/components/human/Nav";
 import { Footer } from "@/components/human/Footer";
+import { useLanguage } from "@/lib/context/LanguageContext";
 import {
   pricingPackages,
   calculatorOptions,
@@ -24,6 +26,12 @@ import {
   socialMediaPackages,
   SocialMediaPackage
 } from "@/lib/data/pricing";
+import {
+  pricingPackagesAr,
+  calculatorOptionsAr,
+  pricingFAQsAr,
+  socialMediaPackagesAr
+} from "@/lib/data/pricing_ar";
 
 /* ─── Animation presets ────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 28, mass: 1.5 } as const;
@@ -64,10 +72,12 @@ function RevealSection({
   children,
   className = "",
   id,
+  style,
 }: {
   children: React.ReactNode;
   className?: string;
   id?: string;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.15 });
@@ -79,6 +89,7 @@ function RevealSection({
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       className={className}
+      style={style}
     >
       {children}
     </motion.section>
@@ -88,6 +99,12 @@ function RevealSection({
 export default function PricingPage() {
   /* Active category toggle: 'web' or 'social' */
   const [activeTab, setActiveTab] = useState<'web' | 'social'>('web');
+  const { t, language } = useLanguage();
+
+  const activePricingPackages = language === "ar" ? pricingPackagesAr : pricingPackages;
+  const activeCalculatorOptions = language === "ar" ? calculatorOptionsAr : calculatorOptions;
+  const activePricingFAQs = language === "ar" ? pricingFAQsAr : pricingFAQs;
+  const activeSocialMediaPackages = language === "ar" ? socialMediaPackagesAr : socialMediaPackages;
 
   /* State for the interactive pricing calculator */
   const [selectedServices, setSelectedServices] = useState<string[]>([
@@ -124,18 +141,18 @@ export default function PricingPage() {
   /* Calculate custom pricing dynamically */
   const calculatedTotal = useMemo(() => {
     return selectedServices.reduce((sum, serviceId) => {
-      const option = calculatorOptions.find((opt) => opt.id === serviceId);
+      const option = activeCalculatorOptions.find((opt) => opt.id === serviceId);
       return sum + (option ? option.baseCost : 0);
     }, 0);
-  }, [selectedServices]);
+  }, [selectedServices, activeCalculatorOptions]);
 
   return (
     <>
       <Nav />
       <main className="w-full relative z-10 overflow-hidden">
         {/* Decorative Background Glows */}
-        <div className="absolute top-[20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-va-accent/5 blur-[120px] pointer-events-none" />
-        <div className="absolute top-[60%] right-[-10%] w-[500px] h-[500px] rounded-full bg-va-accent/5 blur-[120px] pointer-events-none" />
+        <div className="fixed top-[20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-va-accent/5 blur-[120px] pointer-events-none z-0" />
+        <div className="fixed top-[60%] right-[-10%] w-[500px] h-[500px] rounded-full bg-va-accent/5 blur-[120px] pointer-events-none z-0" />
 
         {/* ── HERO SECTION ───────────────────────────────────────────── */}
         <section className="relative pt-28 pb-16 md:pt-36 md:pb-24">
@@ -147,7 +164,7 @@ export default function PricingPage() {
               className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
               style={{ color: "var(--va-accent)" }}
             >
-              Investments
+              {t("pricing.tag")}
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
@@ -158,12 +175,12 @@ export default function PricingPage() {
                 fontFamily: "var(--font-serif)",
                 fontWeight: 500,
                 color: "var(--va-ink)",
-                letterSpacing: "-0.03em",
+                letterSpacing: language === "ar" ? "0" : "-0.03em",
               }}
             >
-              Transparent packages.{" "}
+              {t("pricing.title")}{" "}
               <em className="text-editorial text-gradient-neon block md:inline" style={{ fontStyle: "italic" }}>
-                Built around your growth.
+                {t("pricing.title.italic")}
               </em>
             </motion.h1>
             <motion.p
@@ -173,9 +190,7 @@ export default function PricingPage() {
               className="max-w-xl text-lg font-sans leading-relaxed"
               style={{ color: "var(--va-ink-muted)" }}
             >
-              We believe in clear numbers, transparent milestones, and zero hidden costs.
-              Select one of our established service plans, or configure a completely bespoke
-              stack using our custom estimator below.
+              {t("pricing.desc")}
             </motion.p>
           </div>
         </section>
@@ -206,7 +221,7 @@ export default function PricingPage() {
                     transition={spring}
                   />
                 )}
-                <span className="relative z-10">Web & Branding</span>
+                <span className="relative z-10">{t("pricing.toggle.web")}</span>
               </button>
               <button
                 onClick={() => setActiveTab("social")}
@@ -223,7 +238,7 @@ export default function PricingPage() {
                     transition={spring}
                   />
                 )}
-                <span className="relative z-10">Social Media & Ads</span>
+                <span className="relative z-10">{t("pricing.toggle.social")}</span>
               </button>
             </div>
           </div>
@@ -238,7 +253,7 @@ export default function PricingPage() {
                 exit="exit"
                 className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch"
               >
-                {pricingPackages.map((pkg, idx) => (
+                {activePricingPackages.map((pkg, idx) => (
                   <motion.div
                     key={pkg.name}
                     variants={scaleIn}
@@ -263,13 +278,13 @@ export default function PricingPage() {
                           color: "var(--va-paper)",
                         }}
                       >
-                        <Sparkles size={12} className="animate-pulse" /> Most Popular
+                        <Sparkles size={12} className="animate-pulse" /> {language === "ar" ? "الأكثر طلباً" : "Most Popular"}
                       </span>
                     )}
 
                     {/* Card Icon Header */}
                     <div className="flex justify-between items-start mb-6">
-                      <div>
+                      <div className="text-start">
                         <h3
                           className="text-2xl font-serif font-bold"
                           style={{
@@ -284,16 +299,16 @@ export default function PricingPage() {
                             color: pkg.highlighted ? "var(--va-accent)" : "var(--va-ink-muted)",
                           }}
                         >
-                          {idx === 0 ? "Entry Plan" : idx === 1 ? "Expansion Plan" : "Custom Spec"}
+                          {idx === 0 ? t("pricing.tier.entry") : idx === 1 ? t("pricing.tier.growth") : t("pricing.tier.custom")}
                         </p>
                       </div>
-                      {idx === 0 && <Compass size={24} className="text-va-accent opacity-60" />}
-                      {idx === 1 && <Zap size={24} className="text-va-accent" />}
-                      {idx === 2 && <Calculator size={24} className="text-va-accent opacity-60" />}
+                      {idx === 0 && <Compass size={24} className="text-va-accent opacity-60 flex-shrink-0" />}
+                      {idx === 1 && <Zap size={24} className="text-va-accent flex-shrink-0" />}
+                      {idx === 2 && <Calculator size={24} className="text-va-accent opacity-60 flex-shrink-0" />}
                     </div>
 
                     {/* Price Display */}
-                    <div className="mb-6">
+                    <div className="mb-6 text-start">
                       <span
                         className="text-4xl md:text-5xl font-serif font-bold tracking-tight block"
                         style={{
@@ -310,13 +325,13 @@ export default function PricingPage() {
                             : "var(--va-ink-muted)",
                         }}
                       >
-                        One-time Project Cost
+                        {t("pricing.cost.onetime")}
                       </span>
                     </div>
 
                     {/* Description */}
                     <p
-                      className="font-sans text-sm leading-relaxed mb-8"
+                      className="font-sans text-sm leading-relaxed mb-8 text-start"
                       style={{
                         color: pkg.highlighted
                           ? "color-mix(in srgb, var(--va-paper) 70%, transparent)"
@@ -327,7 +342,7 @@ export default function PricingPage() {
                     </p>
 
                     {/* Features List */}
-                    <ul className="flex flex-col gap-3.5 mb-10 flex-1">
+                    <ul className="flex flex-col gap-3.5 mb-10 flex-1 text-start">
                       {pkg.features.map((feature) => (
                         <li
                           key={feature}
@@ -372,10 +387,15 @@ export default function PricingPage() {
                           background: pkg.highlighted ? "var(--va-accent)" : "var(--va-paper)",
                           color: pkg.highlighted ? "var(--va-paper)" : "var(--va-ink)",
                           border: pkg.highlighted ? "none" : "1px solid var(--va-rule)",
-                          letterSpacing: "0.03em",
+                          letterSpacing: language === "ar" ? "0" : "0.03em",
                         }}
                       >
-                        {pkg.ctaText} <ArrowUpRight size={15} />
+                        {pkg.ctaText}{" "}
+                        {language === "ar" ? (
+                          <ArrowLeft size={15} className="rotate-45" />
+                        ) : (
+                          <ArrowUpRight size={15} />
+                        )}
                       </motion.span>
                     </Link>
                   </motion.div>
@@ -391,7 +411,7 @@ export default function PricingPage() {
                 className="flex flex-col items-center w-full"
               >
                 <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch w-full">
-                  {socialMediaPackages.map((pkg, idx) => (
+                  {activeSocialMediaPackages.map((pkg, idx) => (
                     <motion.div
                       key={pkg.name}
                       variants={scaleIn}
@@ -416,15 +436,15 @@ export default function PricingPage() {
                             color: "var(--va-paper)",
                           }}
                         >
-                          <Sparkles size={12} className="animate-pulse" /> Most Popular
+                          <Sparkles size={12} className="animate-pulse" /> {language === "ar" ? "الأكثر طلباً" : "Most Popular"}
                         </span>
                       )}
 
                       {/* Card Icon Header */}
                       <div className="flex justify-between items-start mb-6">
-                        <div>
+                        <div className="text-start">
                           <h3
-                            className="text-2xl font-serif font-bold"
+                            className="text-2xl font-serif font-bold text-start"
                             style={{
                               color: pkg.highlighted ? "var(--va-paper)" : "var(--va-ink)",
                             }}
@@ -432,28 +452,28 @@ export default function PricingPage() {
                             {pkg.name}
                           </h3>
                           <p
-                            className="font-sans text-xs tracking-wider uppercase font-semibold mt-1"
+                            className="font-sans text-xs tracking-wider uppercase font-semibold mt-1 text-start"
                             style={{
                               color: pkg.highlighted ? "var(--va-accent)" : "var(--va-ink-muted)",
                             }}
                           >
-                            {idx === 0 ? "Starter Tier" : idx === 1 ? "Scaler Tier" : "Enterprise Tier"}
+                            {idx === 0 ? t("pricing.tier.entry") : idx === 1 ? t("pricing.tier.growth") : t("pricing.tier.custom")}
                           </p>
                         </div>
-                        {idx === 0 && <Compass size={24} className="text-va-accent opacity-60" />}
-                        {idx === 1 && <Zap size={24} className="text-va-accent" />}
-                        {idx === 2 && <Calculator size={24} className="text-va-accent opacity-60" />}
+                        {idx === 0 && <Compass size={24} className="text-va-accent opacity-60 flex-shrink-0" />}
+                        {idx === 1 && <Zap size={24} className="text-va-accent flex-shrink-0" />}
+                        {idx === 2 && <Calculator size={24} className="text-va-accent opacity-60 flex-shrink-0" />}
                       </div>
 
                       {/* Price Display (Dual Currency) */}
-                      <div className="mb-4">
+                      <div className="mb-4 text-start">
                         <span
                           className="text-3xl md:text-4xl font-serif font-bold tracking-tight block"
                           style={{
                             color: pkg.highlighted ? "var(--va-paper)" : "var(--va-accent)",
                           }}
                         >
-                          {pkg.priceEGP} <span className="text-sm font-sans font-normal opacity-70">/ mo</span>
+                          {pkg.priceEGP} <span className="text-sm font-sans font-normal opacity-70">/ {language === "ar" ? "شهرياً" : "mo"}</span>
                         </span>
                         <span
                           className="text-sm font-sans font-medium uppercase tracking-widest mt-1 block"
@@ -463,13 +483,13 @@ export default function PricingPage() {
                               : "var(--va-ink-muted)",
                           }}
                         >
-                          or {pkg.priceUSD} USD / month
+                          {language === "ar" ? `أو ${pkg.priceUSD} دولار أمريكي / شهرياً` : `or ${pkg.priceUSD} USD / month`}
                         </span>
                       </div>
 
                       {/* Target Audience */}
                       <p
-                        className="font-sans text-xs leading-relaxed italic mb-6 pb-4 border-b animate-pulse-slow"
+                        className="font-sans text-xs leading-relaxed italic mb-6 pb-4 border-b animate-pulse-slow text-start"
                         style={{
                           borderColor: pkg.highlighted
                             ? "color-mix(in srgb, var(--va-paper) 15%, transparent)"
@@ -483,17 +503,17 @@ export default function PricingPage() {
                       </p>
 
                       {/* Deliverables List */}
-                      <div className="flex-1 flex flex-col justify-between">
+                      <div className="flex-1 flex flex-col justify-between text-start">
                         <div>
                           <p
-                            className="text-xs font-sans font-bold uppercase tracking-wider mb-3"
+                            className="text-xs font-sans font-bold uppercase tracking-wider mb-3 text-start"
                             style={{
                               color: pkg.highlighted ? "var(--va-accent)" : "var(--va-ink-muted)",
                             }}
                           >
-                            Deliverables:
+                            {language === "ar" ? "مخرجات العمل:" : "Deliverables:"}
                           </p>
-                          <ul className="flex flex-col gap-3 mb-6">
+                          <ul className="flex flex-col gap-3 mb-6 text-start">
                             {pkg.deliverables.map((feature) => (
                               <li
                                 key={feature}
@@ -538,7 +558,7 @@ export default function PricingPage() {
                                 color: pkg.highlighted ? "color-mix(in srgb, var(--va-paper) 50%, transparent)" : "var(--va-ink-muted)",
                               }}
                             >
-                              Excluded:
+                              {language === "ar" ? "المستثنيات:" : "Excluded:"}
                             </p>
                             <ul className="flex flex-col gap-2">
                               {pkg.excluded.map((ex) => (
@@ -573,10 +593,15 @@ export default function PricingPage() {
                             background: pkg.highlighted ? "var(--va-accent)" : "var(--va-paper)",
                             color: pkg.highlighted ? "var(--va-paper)" : "var(--va-ink)",
                             border: pkg.highlighted ? "none" : "1px solid var(--va-rule)",
-                            letterSpacing: "0.03em",
+                            letterSpacing: language === "ar" ? "0" : "0.03em",
                           }}
                         >
-                          {pkg.ctaText} <ArrowUpRight size={15} />
+                          {pkg.ctaText}{" "}
+                          {language === "ar" ? (
+                            <ArrowLeft size={15} className="rotate-45" />
+                          ) : (
+                            <ArrowUpRight size={15} />
+                          )}
                         </motion.span>
                       </Link>
                     </motion.div>
@@ -592,8 +617,7 @@ export default function PricingPage() {
                     color: "var(--va-ink-muted)",
                   }}
                 >
-                  <span className="text-base mr-1">💡</span>
-                  All plans can be invoiced in EGP or equivalent USD values. All listed prices represent Agency Management Fees only. Ad Spend Budgets are paid directly by the client to the advertising platforms.
+                  {t("pricing.disclaimer")}
                 </motion.div>
               </motion.div>
             )}
@@ -613,7 +637,7 @@ export default function PricingPage() {
                 className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
                 style={{ color: "var(--va-accent)" }}
               >
-                Bespoke Builder
+                {t("calc.tag")}
               </motion.p>
               <motion.h2
                 variants={fadeUp}
@@ -622,18 +646,17 @@ export default function PricingPage() {
                   fontFamily: "var(--font-serif)",
                   fontWeight: 500,
                   color: "var(--va-ink)",
-                  letterSpacing: "-0.03em",
+                  letterSpacing: language === "ar" ? "0" : "-0.03em",
                 }}
               >
-                Build Your Own Stack
+                {t("calc.title")}
               </motion.h2>
               <motion.p
                 variants={fadeUp}
                 className="font-sans text-base leading-relaxed"
                 style={{ color: "var(--va-ink-muted)" }}
               >
-                Toggle the creative services, engineering components, and optimization audits below
-                to estimate your total launch investment in real-time.
+                {t("calc.desc")}
               </motion.p>
             </div>
 
@@ -643,13 +666,13 @@ export default function PricingPage() {
                 {/* Category: Design / Brand */}
                 <div>
                   <h3
-                    className="text-xs tracking-[0.25em] font-sans font-bold uppercase mb-4"
+                    className="text-xs tracking-[0.25em] font-sans font-bold uppercase mb-4 text-start"
                     style={{ color: "var(--va-ink-muted)" }}
                   >
-                    Brand & Strategy
+                    {t("calc.header.brand")}
                   </h3>
                   <div className="flex flex-col gap-3">
-                    {calculatorOptions
+                    {activeCalculatorOptions
                       .filter((o) => o.category === "design")
                       .map((opt) => {
                         const isSelected = selectedServices.includes(opt.id);
@@ -663,7 +686,7 @@ export default function PricingPage() {
                               borderColor: isSelected ? "var(--va-accent)" : "var(--va-rule)",
                             }}
                           >
-                            <div className="pr-4 flex-1">
+                            <div className="pe-4 flex-1 text-start">
                               <h4
                                 className="font-sans text-sm font-bold"
                                 style={{ color: "var(--va-ink)" }}
@@ -677,12 +700,12 @@ export default function PricingPage() {
                                 {opt.description}
                               </p>
                             </div>
-                            <div className="text-right flex items-center gap-4">
+                            <div className="text-right flex items-center gap-4 flex-shrink-0">
                               <span
                                 className="font-sans text-sm font-semibold"
                                 style={{ color: isSelected ? "var(--va-accent)" : "var(--va-ink)" }}
                               >
-                                + EGP {opt.baseCost.toLocaleString()}
+                                + {language === "ar" ? "" : "EGP"} {opt.baseCost.toLocaleString()} {language === "ar" ? "ج.م" : ""}
                               </span>
                               <div
                                 className="w-5 h-5 rounded-full flex items-center justify-center border transition-all"
@@ -707,13 +730,13 @@ export default function PricingPage() {
                 {/* Category: Web & Engineering */}
                 <div>
                   <h3
-                    className="text-xs tracking-[0.25em] font-sans font-bold uppercase mb-4"
+                    className="text-xs tracking-[0.25em] font-sans font-bold uppercase mb-4 text-start"
                     style={{ color: "var(--va-ink-muted)" }}
                   >
-                    Engineering & Development
+                    {t("calc.header.web")}
                   </h3>
                   <div className="flex flex-col gap-3">
-                    {calculatorOptions
+                    {activeCalculatorOptions
                       .filter((o) => o.category === "web")
                       .map((opt) => {
                         const isSelected = selectedServices.includes(opt.id);
@@ -727,7 +750,7 @@ export default function PricingPage() {
                               borderColor: isSelected ? "var(--va-accent)" : "var(--va-rule)",
                             }}
                           >
-                            <div className="pr-4 flex-1">
+                            <div className="pe-4 flex-1 text-start">
                               <h4
                                 className="font-sans text-sm font-bold"
                                 style={{ color: "var(--va-ink)" }}
@@ -741,12 +764,12 @@ export default function PricingPage() {
                                 {opt.description}
                               </p>
                             </div>
-                            <div className="text-right flex items-center gap-4">
+                            <div className="text-right flex items-center gap-4 flex-shrink-0">
                               <span
                                 className="font-sans text-sm font-semibold"
                                 style={{ color: isSelected ? "var(--va-accent)" : "var(--va-ink)" }}
                               >
-                                + EGP {opt.baseCost.toLocaleString()}
+                                + {language === "ar" ? "" : "EGP"} {opt.baseCost.toLocaleString()} {language === "ar" ? "ج.م" : ""}
                               </span>
                               <div
                                 className="w-5 h-5 rounded-full flex items-center justify-center border transition-all"
@@ -771,13 +794,13 @@ export default function PricingPage() {
                 {/* Category: Marketing */}
                 <div>
                   <h3
-                    className="text-xs tracking-[0.25em] font-sans font-bold uppercase mb-4"
+                    className="text-xs tracking-[0.25em] font-sans font-bold uppercase mb-4 text-start"
                     style={{ color: "var(--va-ink-muted)" }}
                   >
-                    Optimization & Media Campaigns
+                    {t("calc.header.marketing")}
                   </h3>
                   <div className="flex flex-col gap-3">
-                    {calculatorOptions
+                    {activeCalculatorOptions
                       .filter((o) => o.category === "marketing")
                       .map((opt) => {
                         const isSelected = selectedServices.includes(opt.id);
@@ -791,7 +814,7 @@ export default function PricingPage() {
                               borderColor: isSelected ? "var(--va-accent)" : "var(--va-rule)",
                             }}
                           >
-                            <div className="pr-4 flex-1">
+                            <div className="pe-4 flex-1 text-start">
                               <h4
                                 className="font-sans text-sm font-bold"
                                 style={{ color: "var(--va-ink)" }}
@@ -805,12 +828,12 @@ export default function PricingPage() {
                                 {opt.description}
                               </p>
                             </div>
-                            <div className="text-right flex items-center gap-4">
+                            <div className="text-right flex items-center gap-4 flex-shrink-0">
                               <span
                                 className="font-sans text-sm font-semibold"
                                 style={{ color: isSelected ? "var(--va-accent)" : "var(--va-ink)" }}
                               >
-                                + EGP {opt.baseCost.toLocaleString()}
+                                + {language === "ar" ? "" : "EGP"} {opt.baseCost.toLocaleString()} {language === "ar" ? "ج.م" : ""}
                               </span>
                               <div
                                 className="w-5 h-5 rounded-full flex items-center justify-center border transition-all"
@@ -839,23 +862,23 @@ export default function PricingPage() {
                   className="rounded-3xl p-8 border shadow-xl flex flex-col gap-6"
                   style={{ background: "var(--va-paper)", borderColor: "var(--va-rule)" }}
                 >
-                  <div className="border-b pb-4" style={{ borderColor: "var(--va-rule)" }}>
+                  <div className="border-b pb-4 text-start" style={{ borderColor: "var(--va-rule)" }}>
                     <h3
                       className="font-serif text-xl font-bold mb-1"
                       style={{ color: "var(--va-ink)" }}
                     >
-                      Bespoke Estimate
+                      {t("calc.receipt.title")}
                     </h3>
                     <p className="font-sans text-xs" style={{ color: "var(--va-ink-muted)" }}>
-                      Items list & dynamic billing projection
+                      {t("calc.receipt.subtitle")}
                     </p>
                   </div>
 
                   {/* Selected items receipt */}
-                  <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2">
+                  <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pe-2 text-start">
                     <AnimatePresence initial={false}>
                       {selectedServices.map((serviceId) => {
-                        const opt = calculatorOptions.find((o) => o.id === serviceId);
+                        const opt = activeCalculatorOptions.find((o) => o.id === serviceId);
                         if (!opt) return null;
                         return (
                           <motion.div
@@ -866,11 +889,11 @@ export default function PricingPage() {
                             transition={{ duration: 0.2 }}
                             className="flex justify-between items-start text-xs font-sans leading-normal overflow-hidden"
                           >
-                            <span className="flex-1 font-semibold pr-4" style={{ color: "var(--va-ink)" }}>
+                            <span className="flex-1 font-semibold pe-4 text-start" style={{ color: "var(--va-ink)" }}>
                               {opt.name}
                             </span>
                             <span className="font-medium text-right flex-shrink-0" style={{ color: "var(--va-ink-muted)" }}>
-                              EGP {opt.baseCost.toLocaleString()}
+                              {language === "ar" ? "" : "EGP"} {opt.baseCost.toLocaleString()} {language === "ar" ? "ج.م" : ""}
                             </span>
                           </motion.div>
                         );
@@ -879,24 +902,24 @@ export default function PricingPage() {
                   </div>
 
                   {/* Horizontal dividing line */}
-                  <div className="border-t pt-4 flex flex-col gap-4" style={{ borderColor: "var(--va-rule)" }}>
+                  <div className="border-t pt-4 flex flex-col gap-4 text-start" style={{ borderColor: "var(--va-rule)" }}>
                     <div className="flex justify-between items-baseline">
                       <span className="font-sans text-sm font-bold" style={{ color: "var(--va-ink)" }}>
-                        Estimated Launch:
+                        {t("calc.receipt.total")}
                       </span>
                       <motion.span
                         key={calculatedTotal}
                         initial={{ scale: 0.95, opacity: 0.8 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="font-serif text-3xl md:text-4xl font-extrabold"
+                        className="font-serif text-3xl md:text-4xl font-extrabold flex-shrink-0"
                         style={{ color: "var(--va-accent)" }}
                       >
-                        EGP {calculatedTotal.toLocaleString()}
+                        {language === "ar" ? "" : "EGP"} {calculatedTotal.toLocaleString()} {language === "ar" ? "ج.م" : ""}
                       </motion.span>
                     </div>
 
-                    <div className="text-[11px] font-sans leading-normal px-4 py-3 rounded-lg" style={{ background: "var(--va-surface)", color: "var(--va-ink-muted)" }}>
-                      *Estimates represent ballpark figures based on structural engineering difficulty. Final billing depends on visual scope approval.
+                    <div className="text-[11px] font-sans leading-normal px-4 py-3 rounded-lg text-start" style={{ background: "var(--va-surface)", color: "var(--va-ink-muted)" }}>
+                      {t("calc.receipt.disclaimer")}
                     </div>
 
                     {/* Book bespoke stack */}
@@ -913,7 +936,12 @@ export default function PricingPage() {
                           color: "var(--va-paper)",
                         }}
                       >
-                        Book This Estimate <ArrowUpRight size={15} />
+                        {t("calc.receipt.btn")}{" "}
+                        {language === "ar" ? (
+                          <ArrowLeft size={15} className="rotate-45" />
+                        ) : (
+                          <ArrowUpRight size={15} />
+                        )}
                       </motion.span>
                     </Link>
                   </div>
@@ -931,7 +959,7 @@ export default function PricingPage() {
               className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
               style={{ color: "var(--va-accent)" }}
             >
-              FAQ
+              {t("faq.tag")}
             </motion.p>
             <motion.h2
               variants={fadeUp}
@@ -940,14 +968,14 @@ export default function PricingPage() {
                 fontFamily: "var(--font-serif)",
                 fontWeight: 500,
                 color: "var(--va-ink)",
-                letterSpacing: "-0.03em",
+                letterSpacing: language === "ar" ? "0" : "-0.03em",
               }}
             >
-              Pricing Details
+              {t("faq.title")}
             </motion.h2>
           </div>
 
-          <FAQAccordion />
+          <FAQAccordion activePricingFAQs={activePricingFAQs} />
         </RevealSection>
 
         {/* ── CTA BANNER ────────────────────────────────────────────── */}
@@ -974,7 +1002,7 @@ export default function PricingPage() {
                 className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
                 style={{ color: "var(--va-accent)" }}
               >
-                Let&apos;s build it
+                {t("pricing.cta.tag")}
               </p>
               <h2
                 className="text-4xl md:text-6xl lg:text-7xl mb-6"
@@ -982,12 +1010,12 @@ export default function PricingPage() {
                   fontFamily: "var(--font-serif)",
                   fontWeight: 500,
                   color: "var(--va-paper)",
-                  letterSpacing: "-0.03em",
+                  letterSpacing: language === "ar" ? "0" : "-0.03em",
                 }}
               >
-                Ready to launch?{" "}
+                {t("pricing.cta.title")}{" "}
                 <em className="text-editorial text-gradient-neon" style={{ fontStyle: "italic" }}>
-                  Start today.
+                  {t("pricing.cta.title.italic")}
                 </em>
               </h2>
               <p
@@ -996,8 +1024,7 @@ export default function PricingPage() {
                   color: "color-mix(in srgb, var(--va-paper) 60%, transparent)",
                 }}
               >
-                Secure your project timeline slots. Fill out the contact form on the home page,
-                mention your desired pricing plan, and our engineering lead will reach out.
+                {t("pricing.cta.desc")}
               </p>
               <Link href="/#contact">
                 <motion.span
@@ -1007,10 +1034,15 @@ export default function PricingPage() {
                   style={{
                     background: "var(--va-accent)",
                     color: "var(--va-paper)",
-                    letterSpacing: "0.03em",
+                    letterSpacing: language === "ar" ? "0" : "0.03em",
                   }}
                 >
-                  Book a Discovery Call <ArrowUpRight size={18} />
+                  {t("pricing.cta.btn")}{" "}
+                  {language === "ar" ? (
+                    <ArrowLeft size={18} className="rotate-45" />
+                  ) : (
+                    <ArrowUpRight size={18} />
+                  )}
                 </motion.span>
               </Link>
             </div>
@@ -1023,12 +1055,12 @@ export default function PricingPage() {
 }
 
 /* ─── Accordion Component ────────────────────────────────────────── */
-function FAQAccordion() {
+function FAQAccordion({ activePricingFAQs }: { activePricingFAQs: any[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <div className="flex flex-col gap-3.5">
-      {pricingFAQs.map((faq, idx) => {
+      {activePricingFAQs.map((faq, idx) => {
         const isOpen = openIndex === idx;
         return (
           <motion.div
@@ -1042,10 +1074,10 @@ function FAQAccordion() {
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : idx)}
-              className="w-full flex items-center justify-between p-6 text-left"
+              className="w-full flex items-center justify-between p-6 text-start"
             >
               <span
-                className="font-sans font-semibold text-base pr-4"
+                className="font-sans font-semibold text-base pe-4 text-start"
                 style={{ color: "var(--va-ink)" }}
               >
                 {faq.question}
@@ -1072,7 +1104,7 @@ function FAQAccordion() {
                   className="overflow-hidden"
                 >
                   <p
-                    className="px-6 pb-6 font-sans text-base leading-relaxed"
+                    className="px-6 pb-6 font-sans text-base leading-relaxed text-start"
                     style={{ color: "var(--va-ink-muted)" }}
                   >
                     {faq.answer}

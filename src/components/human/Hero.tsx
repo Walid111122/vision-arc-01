@@ -9,8 +9,9 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import { FluidRibbon } from "./FluidRibbon";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 /* ─── Spring config (Luxury slow/heavy) ─────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 30, mass: 1.8 } as const;
@@ -43,14 +44,15 @@ const scaleIn: Variants = {
 
 /* ─── Service labels ─────────────────────────────────────────────────────── */
 const services = [
-  { number: "01", label: "Branding"        },
-  { number: "02", label: "Social Media"    },
-  { number: "03", label: "Web Development" },
+  { number: "01", labelKey: "contact.step2.svc.branding" },
+  { number: "02", labelKey: "contact.step2.svc.social" },
+  { number: "03", labelKey: "contact.step2.svc.web" },
 ];
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
+  const { t, language } = useLanguage();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -80,8 +82,12 @@ export function Hero() {
         variants={fadeIn}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
-        className="absolute right-0 top-0 h-full w-px hidden lg:block z-0"
-        style={{ background: "var(--va-rule)", right: "28%" }}
+        className="absolute top-0 h-full w-px hidden lg:block z-0"
+        style={{ 
+          background: "var(--va-rule)", 
+          right: language === "ar" ? "auto" : "28%",
+          left: language === "ar" ? "28%" : "auto"
+        }}
         aria-hidden="true"
       />
 
@@ -93,7 +99,7 @@ export function Hero() {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="flex flex-col gap-8 lg:pr-20"
+          className="flex flex-col gap-8 lg:pe-20"
         >
           {/* Eyebrow label */}
           <motion.p
@@ -101,11 +107,11 @@ export function Hero() {
             className="text-xs tracking-[0.35em] uppercase font-sans font-semibold"
             style={{ color: "var(--va-accent)" }}
           >
-            Digital Agency — Est. 2024
+            {t("hero.eyebrow")}
           </motion.p>
 
           {/* Heading — staggered word-by-word */}
-          <div className="overflow-hidden" aria-label="Where brands earn their humanity">
+          <div className="overflow-hidden" aria-label={t("hero.title1") + t("hero.title2")}>
             <motion.h1
               variants={slideUp}
               className="leading-[1.05] max-w-2xl text-6xl md:text-8xl"
@@ -113,17 +119,16 @@ export function Hero() {
                 fontFamily: "var(--font-serif)",
                 fontWeight: 500,
                 color: "var(--va-ink)",
-                letterSpacing: "-0.04em",
+                letterSpacing: language === "ar" ? "0" : "-0.04em",
               }}
             >
-              Where brands earn{" "}
+              {t("hero.title1")}
               <br className="hidden sm:block" />
-              their{" "}
               <em
                 className="text-editorial text-gradient-neon"
                 style={{ fontStyle: "italic" }}
               >
-                humanity.
+                {t("hero.title2")}
               </em>
             </motion.h1>
           </div>
@@ -134,9 +139,7 @@ export function Hero() {
             className="max-w-md text-lg font-sans leading-relaxed"
             style={{ color: "var(--va-ink-muted)" }}
           >
-            We partner with ambitious businesses to craft visual identities, run
-            media that converts, and build web experiences that feel hand-made —
-            not generated.
+            {t("hero.desc")}
           </motion.p>
 
           {/* CTAs */}
@@ -147,47 +150,50 @@ export function Hero() {
             <motion.a
               href="#contact"
               id="hero-cta-primary"
-              whileHover={{ scale: 1.03, x: 2 }}
+              whileHover={{ scale: 1.03, x: language === "ar" ? -2 : 2 }}
               whileTap={{ scale: 0.97 }}
               transition={spring}
               className="inline-flex items-center gap-2 px-6 py-3 text-sm font-sans font-medium rounded-full shadow-lg group"
               style={{
                 background: "var(--va-ink)",
                 color: "var(--va-paper)",
-                letterSpacing: "0.04em",
+                letterSpacing: language === "ar" ? "0" : "0.04em",
               }}
             >
-              Start a project
+              {t("hero.cta.talk")}
               <motion.span
                 className="inline-block"
-                whileHover={{ x: 4 }}
+                whileHover={{ x: language === "ar" ? -4 : 4 }}
                 transition={spring}
               >
-                <ArrowRight size={14} strokeWidth={1.5} />
+                {language === "ar" ? (
+                  <ArrowLeft size={14} strokeWidth={1.5} />
+                ) : (
+                  <ArrowRight size={14} strokeWidth={1.5} />
+                )}
               </motion.span>
             </motion.a>
 
             <motion.a
               href="#work"
               id="hero-cta-secondary"
-              whileHover={{ x: 2 }}
+              whileHover={{ x: language === "ar" ? -2 : 2 }}
               transition={spring}
               className="inline-flex items-center gap-2 text-sm font-sans font-medium underline underline-offset-4"
               style={{ color: "var(--va-ink-muted)", textDecorationColor: "var(--va-rule)" }}
             >
-              View our work
+              {t("hero.cta.work")}
             </motion.a>
           </motion.div>
         </motion.div>
 
         {/* ─── RIGHT — Decorative panel ─────────────────────────────── */}
         <motion.div
-          style={{ y: y2 }}
           variants={scaleIn}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="relative hidden lg:flex flex-col justify-between h-[80%] pl-10 py-16 backdrop-blur-sm rounded-3xl"
-          style={{ borderLeft: "1px solid var(--va-rule)" }}
+          className="relative hidden lg:flex flex-col justify-between h-[80%] ps-10 py-16 backdrop-blur-sm rounded-3xl"
+          style={{ y: y2, borderInlineStart: "1px solid var(--va-rule)" }}
         >
           {/* Services list */}
           <div className="flex flex-col gap-8">
@@ -195,15 +201,15 @@ export function Hero() {
               className="text-[10px] tracking-[0.4em] uppercase font-sans font-semibold"
               style={{ color: "var(--va-ink-muted)" }}
             >
-              Our services
+              {t("hero.tagline.services")}
             </p>
-            {services.map(({ number, label }, i) => (
+            {services.map(({ number, labelKey }, i) => (
               <motion.div
-                key={label}
-                initial={{ opacity: 0, x: 20 }}
-                animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                key={labelKey}
+                initial={{ opacity: 0, x: language === "ar" ? -20 : 20 }}
+                animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: language === "ar" ? -20 : 20 }}
                 transition={{ ...spring, delay: 0.5 + i * 0.1 }}
-                whileHover={{ x: 10 }}
+                whileHover={{ x: language === "ar" ? -10 : 10 }}
                 className="flex items-baseline gap-3 group cursor-default"
               >
                 <span
@@ -222,16 +228,16 @@ export function Hero() {
                     transition: "color 0.2s ease",
                   }}
                 >
-                  {label}
+                  {t(labelKey)}
                 </span>
                 <motion.span
-                  className="ml-auto"
-                  initial={{ opacity: 0, x: -4 }}
+                  className={language === "ar" ? "mr-auto" : "ml-auto"}
+                  initial={{ opacity: 0, x: language === "ar" ? 4 : -4 }}
                   whileHover={{ opacity: 1, x: 0 }}
                   transition={spring}
                   style={{ color: "var(--va-accent)" }}
                 >
-                  →
+                  {language === "ar" ? "←" : "→"}
                 </motion.span>
               </motion.div>
             ))}
@@ -252,7 +258,7 @@ export function Hero() {
                 className="text-[10px] tracking-[0.3em] uppercase font-sans font-semibold"
                 style={{ color: "var(--va-accent)" }}
               >
-                Our ethos
+                {t("hero.ethos.title")}
               </p>
               <blockquote
                 className="text-base leading-snug"
@@ -262,8 +268,7 @@ export function Hero() {
                   color: "var(--va-ink)",
                 }}
               >
-                &ldquo;Generic design is invisible. We make brands that people
-                actually remember.&rdquo;
+                &ldquo;{t("hero.ethos.quote")}&rdquo;
               </blockquote>
             </div>
           </motion.div>
@@ -288,7 +293,7 @@ export function Hero() {
           className="text-[9px] tracking-[0.4em] uppercase font-sans font-bold"
           style={{ color: "var(--va-ink-muted)" }}
         >
-          Scroll
+          {language === "ar" ? "اسحب لأسفل" : "Scroll"}
         </span>
       </motion.div>
     </section>

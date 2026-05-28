@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const { t, language } = useLanguage();
 
   return (
     <footer
@@ -39,30 +41,29 @@ export function Footer() {
               </span>
             </Link>
             <p className="max-w-sm text-sm font-sans" style={{ color: "var(--va-ink-muted)" }}>
-              A multi-disciplinary digital agency focused on branding, media buying, 
-              and bespoke web experiences. Hand-crafted, never generated.
+              {t("footer.desc")}
             </p>
           </div>
 
           {/* Navigation Links */}
           <div className="flex flex-col gap-4">
             <h4 className="text-xs tracking-[0.2em] uppercase font-sans mb-2" style={{ color: "var(--va-ink)" }}>
-              Navigation
+              {t("footer.nav.header")}
             </h4>
             {[
-              { label: "Work", href: "/#work" },
-              { label: "Services", href: "/services" },
-              { label: "Pricing", href: "/pricing" },
-              { label: "About", href: "/#about" },
-              { label: "Contact", href: "/#contact" },
+              { labelKey: "nav.work", href: "/#work" },
+              { labelKey: "nav.services", href: "/services" },
+              { labelKey: "nav.pricing", href: "/pricing" },
+              { labelKey: "nav.about", href: "/#about" },
+              { labelKey: "nav.contact", href: "/#contact" },
             ].map((item) => (
               <Link
-                key={item.label}
+                key={item.labelKey}
                 href={item.href}
                 className="text-sm font-sans w-fit hover:opacity-70 transition-opacity"
                 style={{ color: "var(--va-ink-muted)" }}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             ))}
           </div>
@@ -70,7 +71,7 @@ export function Footer() {
           {/* Social / External Links */}
           <div className="flex flex-col gap-4">
             <h4 className="text-xs tracking-[0.2em] uppercase font-sans mb-2" style={{ color: "var(--va-ink)" }}>
-              Socials
+              {t("footer.social.header")}
             </h4>
             {[
               { label: "Twitter / X", href: "#" },
@@ -88,7 +89,7 @@ export function Footer() {
                 <span className="group-hover:underline underline-offset-4 decoration-1 decoration-neutral-400">
                   {link.label}
                 </span>
-                <ArrowUpRight size={14} className="opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300" />
+                <ArrowUpRight size={14} className={`opacity-0 ${language === "ar" ? "translate-x-2" : "-translate-x-2"} translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300`} />
               </a>
             ))}
           </div>
@@ -100,14 +101,14 @@ export function Footer() {
           style={{ borderColor: "var(--va-rule)" }}
         >
           <p className="text-xs font-sans" style={{ color: "var(--va-ink-muted)" }}>
-            &copy; {currentYear} VisionArc Agency. All rights reserved.
+            &copy; {currentYear} {t("footer.rights")}
           </p>
           <div className="flex gap-6">
             <Link href="/privacy" className="text-xs font-sans hover:underline" style={{ color: "var(--va-ink-muted)" }}>
-              Privacy Policy
+              {t("footer.privacy")}
             </Link>
             <Link href="#" className="text-xs font-sans hover:underline" style={{ color: "var(--va-ink-muted)" }}>
-              Terms of Service
+              {t("footer.terms")}
             </Link>
           </div>
         </div>

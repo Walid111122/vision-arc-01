@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, CheckCircle2, ChevronRight, XCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, ChevronRight, XCircle } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations/contact";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 /* ─── Spring config ─────────────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 200, damping: 24, mass: 1 } as const;
 
-export function ContactForm() {
+function ContactFormInner() {
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1); // 4 = Success, 5 = Error
   const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,6 +21,7 @@ export function ContactForm() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const searchParams = useSearchParams();
+  const { t, language } = useLanguage();
 
   const {
     register,
@@ -152,7 +154,7 @@ export function ContactForm() {
           className="text-xs tracking-[0.35em] uppercase font-sans mb-4"
           style={{ color: "var(--va-accent)" }}
         >
-          Start a project
+          {t("contact.tag")}
         </p>
         <h2
           className="text-4xl md:text-5xl mb-6 leading-[1.1]"
@@ -160,17 +162,16 @@ export function ContactForm() {
             fontFamily: "var(--font-serif)",
             fontWeight: 300,
             color: "var(--va-ink)",
-            letterSpacing: "-0.01em",
+            letterSpacing: language === "ar" ? "0" : "-0.01em",
           }}
         >
-          Let's talk about <br />
+          {t("contact.title")} <br />
           <em className="text-editorial text-gradient-neon" style={{ fontStyle: "italic" }}>
-            what's next.
+            {t("contact.title.italic")}
           </em>
         </h2>
         <p className="font-sans text-base leading-relaxed mb-8" style={{ color: "var(--va-ink-muted)" }}>
-          Fill out the form below to give us a sense of your project.
-          We review every inquiry and aim to respond within 48 hours.
+          {t("contact.desc")}
         </p>
 
         {/* Progress Indicator */}
@@ -213,45 +214,45 @@ export function ContactForm() {
               >
                 <div className="mb-2">
                   <h3 className="text-2xl mb-2" style={{ fontFamily: "var(--font-serif)", color: "var(--va-ink)" }}>
-                    First, who are we speaking with?
+                    {t("contact.step1.header")}
                   </h3>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="name" className="text-sm font-sans" style={{ color: "var(--va-ink-muted)" }}>
-                    Full Name
+                  <label htmlFor="name" className="text-sm font-sans text-start" style={{ color: "var(--va-ink-muted)" }}>
+                    {t("contact.step1.name")}
                   </label>
                   <input
                     id="name"
                     {...register("name")}
                     suppressHydrationWarning
-                    className="w-full bg-transparent border-b pb-2 pt-1 font-sans text-lg focus:outline-none transition-colors"
+                    className="w-full bg-transparent border-b pb-2 pt-1 font-sans text-lg focus:outline-none transition-colors text-start"
                     style={{
                       borderColor: errors.name ? "var(--color-destructive)" : "var(--va-rule)",
                       color: "var(--va-ink)",
                     }}
-                    placeholder="Jane Doe"
+                    placeholder={t("contact.step1.name.placeholder")}
                   />
-                  {errors.name && <span className="text-xs text-red-500">{errors.name.message}</span>}
+                  {errors.name && <span className="text-xs text-red-500 text-start">{errors.name.message}</span>}
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-sm font-sans" style={{ color: "var(--va-ink-muted)" }}>
-                    Email Address
+                  <label htmlFor="email" className="text-sm font-sans text-start" style={{ color: "var(--va-ink-muted)" }}>
+                    {t("contact.step1.email")}
                   </label>
                   <input
                     id="email"
                     type="email"
                     {...register("email")}
                     suppressHydrationWarning
-                    className="w-full bg-transparent border-b pb-2 pt-1 font-sans text-lg focus:outline-none transition-colors"
+                    className="w-full bg-transparent border-b pb-2 pt-1 font-sans text-lg focus:outline-none transition-colors text-start"
                     style={{
                       borderColor: errors.email ? "var(--color-destructive)" : "var(--va-rule)",
                       color: "var(--va-ink)",
                     }}
-                    placeholder="jane@example.com"
+                    placeholder={t("contact.step1.email.placeholder")}
                   />
-                  {errors.email && <span className="text-xs text-red-500">{errors.email.message}</span>}
+                  {errors.email && <span className="text-xs text-red-500 text-start">{errors.email.message}</span>}
                 </div>
 
                 <div className="mt-auto pt-8 flex justify-end">
@@ -264,7 +265,8 @@ export function ContactForm() {
                     className="px-6 py-3 rounded-sm flex items-center gap-2 text-sm font-medium"
                     style={{ background: "var(--va-ink)", color: "var(--va-paper)" }}
                   >
-                    Next Step <ArrowRight size={16} />
+                    {t("contact.btn.next")}{" "}
+                    {language === "ar" ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
                   </motion.button>
                 </div>
               </motion.div>
@@ -283,51 +285,51 @@ export function ContactForm() {
               >
                 <div>
                   <h3 className="text-2xl mb-2" style={{ fontFamily: "var(--font-serif)", color: "var(--va-ink)" }}>
-                    What are you looking for?
+                    {t("contact.step2.header")}
                   </h3>
                 </div>
 
                 {/* Service Selection */}
                 <div className="flex flex-col gap-3">
-                  <label className="text-sm font-sans" style={{ color: "var(--va-ink-muted)" }}>
-                    Primary Service
+                  <label className="text-sm font-sans text-start" style={{ color: "var(--va-ink-muted)" }}>
+                    {t("contact.step2.service")}
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { id: "branding", label: "Branding" },
-                      { id: "social", label: "Social Media" },
-                      { id: "web", label: "Web Development" },
-                      { id: "other", label: "Other" },
+                      { id: "branding", labelKey: "contact.step2.svc.branding" },
+                      { id: "social", labelKey: "contact.step2.svc.social" },
+                      { id: "web", labelKey: "contact.step2.svc.web" },
+                      { id: "other", labelKey: "contact.step2.svc.other" },
                     ].map((svc) => (
                       <button
                         key={svc.id}
                         type="button"
                         onClick={() => setValue("service", svc.id as any, { shouldValidate: true })}
                         suppressHydrationWarning
-                        className="px-4 py-3 text-sm text-left border rounded-sm transition-all"
+                        className="px-4 py-3 text-sm text-start border rounded-sm transition-all"
                         style={{
                           borderColor: selectedService === svc.id ? "var(--va-accent)" : "var(--va-rule)",
                           background: selectedService === svc.id ? "color-mix(in srgb, var(--va-accent) 10%, transparent)" : "transparent",
                           color: selectedService === svc.id ? "var(--va-ink)" : "var(--va-ink-muted)",
                         }}
                       >
-                        {svc.label}
+                        {t(svc.labelKey)}
                       </button>
                     ))}
                   </div>
-                  {errors.service && <span className="text-xs text-red-500">{errors.service.message}</span>}
+                  {errors.service && <span className="text-xs text-red-500 text-start">{errors.service.message}</span>}
                 </div>
 
                 {/* Budget Selection */}
                 <div className="flex flex-col gap-3">
-                  <label className="text-sm font-sans" style={{ color: "var(--va-ink-muted)" }}>
-                    Estimated Budget
+                  <label className="text-sm font-sans text-start" style={{ color: "var(--va-ink-muted)" }}>
+                    {t("contact.step2.budget")}
                   </label>
                   <div className="flex gap-3">
                     {[
-                      { id: "small", label: "< $5k" },
-                      { id: "medium", label: "$5k - $15k" },
-                      { id: "large", label: "$15k+" },
+                      { id: "small", labelKey: "contact.step2.budget.small" },
+                      { id: "medium", labelKey: "contact.step2.budget.medium" },
+                      { id: "large", labelKey: "contact.step2.budget.large" },
                     ].map((bg) => (
                       <button
                         key={bg.id}
@@ -341,11 +343,11 @@ export function ContactForm() {
                           color: selectedBudget === bg.id ? "var(--va-ink)" : "var(--va-ink-muted)",
                         }}
                       >
-                        {bg.label}
+                        {t(bg.labelKey)}
                       </button>
                     ))}
                   </div>
-                  {errors.budget && <span className="text-xs text-red-500">{errors.budget.message}</span>}
+                  {errors.budget && <span className="text-xs text-red-500 text-start">{errors.budget.message}</span>}
                 </div>
 
                 <div className="mt-auto pt-6 flex justify-between items-center">
@@ -356,7 +358,7 @@ export function ContactForm() {
                     className="text-sm flex items-center gap-1 hover:opacity-70 transition-opacity"
                     style={{ color: "var(--va-ink-muted)" }}
                   >
-                    <ChevronRight size={16} className="rotate-180" /> Back
+                    <ChevronRight size={16} className={language === "ar" ? "" : "rotate-180"} /> {t("contact.btn.back")}
                   </button>
                   <motion.button
                     type="button"
@@ -367,7 +369,8 @@ export function ContactForm() {
                     className="px-6 py-3 rounded-sm flex items-center gap-2 text-sm font-medium"
                     style={{ background: "var(--va-ink)", color: "var(--va-paper)" }}
                   >
-                    Next Step <ArrowRight size={16} />
+                    {t("contact.btn.next")}{" "}
+                    {language === "ar" ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
                   </motion.button>
                 </div>
               </motion.div>
@@ -386,26 +389,26 @@ export function ContactForm() {
               >
                 <div>
                   <h3 className="text-2xl mb-2" style={{ fontFamily: "var(--font-serif)", color: "var(--va-ink)" }}>
-                    Tell us about the project.
+                    {t("contact.step3.header")}
                   </h3>
                 </div>
 
                 <div className="flex flex-col gap-2 flex-1">
-                  <label htmlFor="details" className="text-sm font-sans" style={{ color: "var(--va-ink-muted)" }}>
-                    Project Details
+                  <label htmlFor="details" className="text-sm font-sans text-start" style={{ color: "var(--va-ink-muted)" }}>
+                    {t("contact.step3.details")}
                   </label>
                   <textarea
                     id="details"
                     {...register("details")}
                     suppressHydrationWarning
-                    className="w-full flex-1 min-h-[150px] bg-transparent border rounded-sm p-4 font-sans text-base focus:outline-none transition-colors resize-none"
+                    className="w-full flex-1 min-h-[150px] bg-transparent border rounded-sm p-4 font-sans text-base focus:outline-none transition-colors resize-none text-start"
                     style={{
                       borderColor: errors.details ? "var(--color-destructive)" : "var(--va-rule)",
                       color: "var(--va-ink)",
                     }}
-                    placeholder="Describe your goals, current challenges, and any deadlines..."
+                    placeholder={t("contact.step3.placeholder")}
                   />
-                  {errors.details && <span className="text-xs text-red-500">{errors.details.message}</span>}
+                  {errors.details && <span className="text-xs text-red-500 text-start">{errors.details.message}</span>}
                 </div>
 
                 <div className="mt-auto pt-6 flex justify-between items-center">
@@ -416,7 +419,7 @@ export function ContactForm() {
                     className="text-sm flex items-center gap-1 hover:opacity-70 transition-opacity"
                     style={{ color: "var(--va-ink-muted)" }}
                   >
-                    <ChevronRight size={16} className="rotate-180" /> Back
+                    <ChevronRight size={16} className={language === "ar" ? "" : "rotate-180"} /> {t("contact.btn.back")}
                   </button>
                   <motion.button
                     type="submit"
@@ -431,7 +434,7 @@ export function ContactForm() {
                       opacity: isSubmitting ? 0.8 : 1,
                     }}
                   >
-                    {isSubmitting ? "Sending..." : "Submit Inquiry"}
+                    {isSubmitting ? t("contact.btn.submitting") : t("contact.btn.submit")}
                   </motion.button>
                 </div>
               </motion.div>
@@ -455,10 +458,10 @@ export function ContactForm() {
                   <CheckCircle2 size={64} strokeWidth={1} style={{ color: "var(--va-accent)" }} />
                 </motion.div>
                 <h3 className="text-3xl mt-4" style={{ fontFamily: "var(--font-serif)", color: "var(--va-ink)" }}>
-                  Inquiry received.
+                  {t("contact.success.header")}
                 </h3>
                 <p className="font-sans text-base max-w-sm" style={{ color: "var(--va-ink-muted)" }}>
-                  Thank you for reaching out. We will review your details and be in touch within 48 hours.
+                  {t("contact.success.desc")}
                 </p>
               </motion.div>
             )}
@@ -481,10 +484,10 @@ export function ContactForm() {
                   <XCircle size={64} strokeWidth={1} style={{ color: "var(--color-destructive)" }} />
                 </motion.div>
                 <h3 className="text-3xl mt-4" style={{ fontFamily: "var(--font-serif)", color: "var(--va-ink)" }}>
-                  Something went wrong.
+                  {t("contact.error.header")}
                 </h3>
                 <p className="font-sans text-base max-w-sm" style={{ color: "var(--va-ink-muted)" }}>
-                  {errorMessage || "Please try again later."}
+                  {errorMessage || t("contact.error.desc")}
                 </p>
                 <button
                   type="button"
@@ -493,7 +496,7 @@ export function ContactForm() {
                   className="mt-6 px-6 py-2 rounded-sm text-sm font-medium transition-colors border"
                   style={{ borderColor: "var(--va-rule)", color: "var(--va-ink)" }}
                 >
-                  Try Again
+                  {t("contact.error.btn")}
                 </button>
               </motion.div>
             )}
@@ -502,5 +505,17 @@ export function ContactForm() {
         </form>
       </motion.div>
     </section>
+  );
+}
+
+export function ContactForm() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[400px] flex items-center justify-center" style={{ color: "var(--va-ink-muted)" }}>
+        <span className="text-sm font-sans tracking-wider uppercase">Loading Form...</span>
+      </div>
+    }>
+      <ContactFormInner />
+    </Suspense>
   );
 }

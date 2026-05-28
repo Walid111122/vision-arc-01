@@ -2,11 +2,13 @@
 
 import { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
-import { Globe, Diamond, BarChart3, ArrowUpRight } from "lucide-react";
+import { Globe, Diamond, BarChart3, ArrowUpRight, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/human/Nav";
 import { Footer } from "@/components/human/Footer";
+import { useLanguage } from "@/lib/context/LanguageContext";
+import { servicesListAr } from "@/lib/data/services_ar";
 
 /* ─── Animation presets ────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 28, mass: 1.5 } as const;
@@ -95,10 +97,11 @@ function RevealSection({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SERVICES LISTING PAGE
-   ═══════════════════════════════════════════════════════════════════════ */
 export default function ServicesPage() {
+  const { t, language } = useLanguage();
+
+  const activeServicesList = language === "ar" ? servicesListAr : servicesList;
+
   return (
     <>
       <Nav />
@@ -110,41 +113,42 @@ export default function ServicesPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.1 }}
-              className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
+              className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6 text-start"
               style={{ color: "var(--va-accent)" }}
             >
-              Our Services
+              {t("nav.services")}
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.2 }}
-              className="text-5xl md:text-7xl lg:text-8xl leading-[1.05] mb-8 max-w-5xl"
+              className="text-5xl md:text-7xl lg:text-8xl leading-[1.05] mb-8 max-w-5xl text-start"
               style={{
                 fontFamily: "var(--font-serif)",
                 fontWeight: 500,
                 color: "var(--va-ink)",
-                letterSpacing: "-0.03em",
+                letterSpacing: language === "ar" ? "0" : "-0.03em",
               }}
             >
-              We don&apos;t do everything.{" "}
+              {t("services.title1")}{" "}
               <em
                 className="text-editorial text-gradient-neon block md:inline"
                 style={{ fontStyle: "italic" }}
               >
-                We do three things, exceptionally well.
+                {t("services.title2")}
               </em>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.35 }}
-              className="max-w-xl text-lg font-sans leading-relaxed"
+              className="max-w-xl text-lg font-sans leading-relaxed text-start"
               style={{ color: "var(--va-ink-muted)" }}
             >
-              Our approach is intentionally narrow. By focusing our craft, we
-              deliver results that feel considered, native, and undeniably human.
-              Click any service below to explore the full details.
+              {t("services.desc")}{" "}
+              {language === "ar"
+                ? "انقر على أي خدمة أدناه لاستكشاف التفاصيل الكاملة."
+                : "Click any service below to explore the full details."}
             </motion.p>
           </div>
         </section>
@@ -152,8 +156,15 @@ export default function ServicesPage() {
         {/* ── SERVICE CARDS ──────────────────────────────────────────── */}
         <section className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24 md:pb-32">
           <div className="flex flex-col gap-8">
-            {servicesList.map((service, i) => {
+            {activeServicesList.map((service, i) => {
               const IconComponent = service.icon;
+              const isImageRight = i % 2 === 1;
+
+              // Conditionally align gradient to flow from content side to image side
+              const gradientDirectionClass = language === "ar"
+                ? (isImageRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r")
+                : (isImageRight ? "lg:bg-gradient-to-r" : "lg:bg-gradient-to-l");
+
               return (
                 <RevealSection key={service.slug}>
                   <motion.div variants={scaleIn}>
@@ -174,7 +185,7 @@ export default function ServicesPage() {
                           {/* ── Image Side ──────────────────────────── */}
                           <div
                             className={`relative h-[300px] lg:h-auto overflow-hidden ${
-                              i % 2 === 1 ? "lg:order-2" : ""
+                              isImageRight ? "lg:order-2" : ""
                             }`}
                           >
                             <Image
@@ -184,20 +195,20 @@ export default function ServicesPage() {
                               sizes="(max-width: 1024px) 100vw, 50vw"
                               className="object-cover transition-transform duration-[2000ms] group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-va-surface via-va-surface/60 to-transparent" />
+                            <div className={`absolute inset-0 bg-gradient-to-t ${gradientDirectionClass} from-va-surface via-va-surface/60 to-transparent`} />
 
                             {/* Stats overlay */}
-                            <div className="absolute bottom-6 left-6 flex gap-6">
+                            <div className="absolute bottom-6 ps-6 pe-6 flex gap-6 text-start">
                               {service.stats.map((stat) => (
                                 <div key={stat.label}>
                                   <p
-                                    className="text-3xl font-serif font-bold"
+                                    className="text-3xl font-serif font-bold text-start"
                                     style={{ color: "var(--va-accent)" }}
                                   >
                                     {stat.value}
                                   </p>
                                   <p
-                                    className="text-xs font-sans font-semibold uppercase tracking-widest"
+                                    className="text-xs font-sans font-semibold uppercase tracking-widest text-start"
                                     style={{ color: "var(--va-ink-muted)" }}
                                   >
                                     {stat.label}
@@ -209,8 +220,8 @@ export default function ServicesPage() {
 
                           {/* ── Content Side ────────────────────────── */}
                           <div
-                            className={`p-8 md:p-12 lg:p-16 flex flex-col justify-center ${
-                              i % 2 === 1 ? "lg:order-1" : ""
+                            className={`p-8 md:p-12 lg:p-16 flex flex-col justify-center text-start ${
+                              isImageRight ? "lg:order-1" : ""
                             }`}
                           >
                             {/* Icon */}
@@ -230,12 +241,12 @@ export default function ServicesPage() {
 
                             {/* Title */}
                             <h2
-                              className="text-3xl md:text-4xl lg:text-5xl mb-3"
+                              className="text-3xl md:text-4xl lg:text-5xl mb-3 text-start"
                               style={{
                                 fontFamily: "var(--font-serif)",
                                 fontWeight: 600,
                                 color: "var(--va-ink)",
-                                letterSpacing: "-0.02em",
+                                letterSpacing: language === "ar" ? "0" : "-0.02em",
                               }}
                             >
                               {service.title}
@@ -243,7 +254,7 @@ export default function ServicesPage() {
 
                             {/* Subtitle */}
                             <p
-                              className="font-sans text-base font-semibold mb-4"
+                              className="font-sans text-base font-semibold mb-4 text-start"
                               style={{ color: "var(--va-accent)" }}
                             >
                               {service.subtitle}
@@ -251,14 +262,14 @@ export default function ServicesPage() {
 
                             {/* Description */}
                             <p
-                              className="font-sans text-base leading-relaxed mb-8 max-w-md"
+                              className="font-sans text-base leading-relaxed mb-8 max-w-md text-start"
                               style={{ color: "var(--va-ink-muted)" }}
                             >
                               {service.desc}
                             </p>
 
                             {/* Deliverables pills */}
-                            <div className="flex flex-wrap gap-2 mb-8">
+                            <div className="flex flex-wrap gap-2 mb-8 justify-start">
                               {service.deliverables.map((item) => (
                                 <span
                                   key={item}
@@ -284,15 +295,23 @@ export default function ServicesPage() {
                                 {service.price}
                               </span>
                               <span
-                                className="inline-flex items-center gap-2 font-sans text-sm font-semibold transition-transform group-hover:translate-x-1"
+                                className="inline-flex items-center gap-2 font-sans text-sm font-semibold transition-transform"
                                 style={{ color: "var(--va-accent)" }}
                               >
-                                Explore Service
-                                <ArrowUpRight
-                                  size={16}
-                                  strokeWidth={2.5}
-                                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                                />
+                                {t("services.accordion.cta")}
+                                {language === "ar" ? (
+                                  <ArrowLeft
+                                    size={16}
+                                    strokeWidth={2.5}
+                                    className="transition-transform group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 rotate-45"
+                                  />
+                                ) : (
+                                  <ArrowUpRight
+                                    size={16}
+                                    strokeWidth={2.5}
+                                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                  />
+                                )}
                               </span>
                             </div>
                           </div>
@@ -330,7 +349,7 @@ export default function ServicesPage() {
                 className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
                 style={{ color: "var(--va-accent)" }}
               >
-                Ready to start?
+                {language === "ar" ? "جاهز للبدء؟" : "Ready to start?"}
               </p>
               <h2
                 className="text-4xl md:text-6xl lg:text-7xl mb-6"
@@ -338,25 +357,26 @@ export default function ServicesPage() {
                   fontFamily: "var(--font-serif)",
                   fontWeight: 500,
                   color: "var(--va-paper)",
-                  letterSpacing: "-0.03em",
+                  letterSpacing: language === "ar" ? "0" : "-0.03em",
                 }}
               >
-                Not sure which service fits?{" "}
+                {language === "ar" ? "غير متأكد أي الخدمات تناسبك؟ " : "Not sure which service fits? "}
                 <em
                   className="text-editorial text-gradient-neon"
                   style={{ fontStyle: "italic" }}
                 >
-                  Let&apos;s talk.
+                  {language === "ar" ? "دعنا نتحدث." : "Let's talk."}
                 </em>
               </h2>
               <p
-                className="font-sans text-lg max-w-xl mx-auto mb-10"
+                className="font-sans text-lg max-w-xl mx-auto mb-10 text-center"
                 style={{
                   color: "color-mix(in srgb, var(--va-paper) 60%, transparent)",
                 }}
               >
-                Tell us about your project and we&apos;ll recommend the right
-                approach — no obligation, no pitch deck, just a real conversation.
+                {language === "ar"
+                  ? "أخبرنا عن مشروعك وسنوصيك بالنهج الصحيح - دون التزامات، فقط محادثة حقيقية."
+                  : "Tell us about your project and we'll recommend the right approach — no obligation, no pitch deck, just a real conversation."}
               </p>
               <Link href="/#contact">
                 <motion.span
@@ -366,10 +386,15 @@ export default function ServicesPage() {
                   style={{
                     background: "var(--va-accent)",
                     color: "var(--va-paper)",
-                    letterSpacing: "0.03em",
+                    letterSpacing: language === "ar" ? "0" : "0.03em",
                   }}
                 >
-                  Start a Project <ArrowUpRight size={18} />
+                  {t("nav.cta")}{" "}
+                  {language === "ar" ? (
+                    <ArrowLeft size={18} className="rotate-45" />
+                  ) : (
+                    <ArrowUpRight size={18} />
+                  )}
                 </motion.span>
               </Link>
             </div>

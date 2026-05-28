@@ -5,6 +5,8 @@ import { motion, useInView, Variants, AnimatePresence } from "framer-motion";
 import { Globe, Diamond, BarChart3, ArrowUpRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/lib/context/LanguageContext";
+import { servicesListAr } from "@/lib/data/services_ar";
 
 /* ─── Spring config ─────────────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 30, mass: 1.8 } as const;
@@ -61,6 +63,9 @@ export function Services() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { t, language } = useLanguage();
+
+  const activeServices = language === "ar" ? servicesListAr : servicesList;
 
   const toggleExpand = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
@@ -88,7 +93,7 @@ export function Services() {
             className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
             style={{ color: "var(--va-accent)" }}
           >
-            What we do
+            {t("services.tag")}
           </motion.p>
           <motion.h2
             variants={cardVariants}
@@ -97,12 +102,12 @@ export function Services() {
               fontFamily: "var(--font-serif)",
               fontWeight: 500,
               color: "var(--va-ink)",
-              letterSpacing: "-0.03em",
+              letterSpacing: language === "ar" ? "0" : "-0.03em",
             }}
           >
-            We don't do everything. <br className="hidden md:block" />
+            {t("services.title1")} <br className="hidden md:block" />
             <em className="text-editorial text-gradient-neon" style={{ fontStyle: "italic" }}>
-              We do three things, exceptionally well.
+              {t("services.title2")}
             </em>
           </motion.h2>
         </motion.div>
@@ -114,8 +119,7 @@ export function Services() {
           className="max-w-xs text-base font-sans"
           style={{ color: "var(--va-ink-muted)" }}
         >
-          Our approach is intentionally narrow. By focusing our craft, we deliver
-          results that feel considered, native, and undeniably human.
+          {t("services.desc")}
         </motion.p>
       </div>
 
@@ -126,7 +130,7 @@ export function Services() {
         animate={inView ? "visible" : "hidden"}
         className="grid grid-cols-1 md:grid-cols-3 auto-rows-[auto] gap-4 md:gap-6 relative z-10"
       >
-        {servicesList.map((service) => {
+        {activeServices.map((service) => {
           const isExpanded = expandedId === service.id;
           const IconComponent = service.icon;
 
@@ -163,7 +167,7 @@ export function Services() {
                     <IconComponent size={28} strokeWidth={1.5} className="text-va-ink" />
                   </motion.div>
                   <motion.div
-                    className="p-3 rounded-full transition-colors shadow-lg"
+                    className="p-3 rounded-full transition-colors shadow-lg cursor-pointer"
                     onClick={(e) => toggleExpand(e, service.id)}
                     animate={{ rotate: isExpanded ? 180 : 0 }}
                     style={{ background: "var(--va-accent)" }}
@@ -198,7 +202,7 @@ export function Services() {
                       >
                         <div className="pt-6 border-t" style={{ borderColor: "var(--va-rule)" }}>
                           <h4 className="text-sm font-sans font-bold uppercase tracking-widest mb-4" style={{ color: "var(--va-accent)" }}>
-                            Deliverables
+                            {t("services.deliverables")}
                           </h4>
                           <ul className="flex flex-col gap-2 mb-6">
                             {service.deliverables.map((item, idx) => (
@@ -209,7 +213,7 @@ export function Services() {
                             ))}
                           </ul>
                           <div className="flex items-center justify-between p-4 rounded-xl bg-va-paper" style={{ border: "1px solid var(--va-rule)" }}>
-                            <span className="font-sans text-sm font-semibold uppercase tracking-widest" style={{ color: "var(--va-ink-muted)" }}>Engagement</span>
+                            <span className="font-sans text-sm font-semibold uppercase tracking-widest" style={{ color: "var(--va-ink-muted)" }}>{t("services.engagement")}</span>
                             <span className="font-serif text-xl" style={{ color: "var(--va-ink)" }}>{service.price}</span>
                           </div>
                         </div>
@@ -223,11 +227,11 @@ export function Services() {
                     className="flex items-center gap-2 mt-6 font-sans text-sm font-semibold group/link"
                     style={{ color: "var(--va-accent)" }}
                   >
-                    Explore Service
+                    {t("services.accordion.cta")}
                     <motion.span
-                      className="inline-flex transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-0.5"
+                      className={`inline-flex transition-transform ${language === "ar" ? "group-hover/link:-translate-x-1" : "group-hover/link:translate-x-1"} group-hover/link:-translate-y-0.5`}
                     >
-                      <ArrowUpRight size={16} strokeWidth={2.5} />
+                      <ArrowUpRight size={16} strokeWidth={2.5} className={language === "ar" ? "rotate-90" : ""} />
                     </motion.span>
                   </motion.div>
                 </motion.div>

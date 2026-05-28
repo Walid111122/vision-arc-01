@@ -2,13 +2,12 @@
 
 import { ReactNode, useEffect, useRef } from "react";
 import Lenis from "lenis";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const isInitialMount = useRef(true);
 
   useEffect(() => {
@@ -107,7 +106,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         }
       }
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return (
     <div ref={wrapperRef} style={{ position: "relative" }}>

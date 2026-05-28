@@ -6,6 +6,8 @@ import Link from "next/link";
 import { motion, useInView, Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { projects } from "@/lib/data/projects";
+import { projectsAr } from "@/lib/data/projects_ar";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 /* ─── Spring config ─────────────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 30, mass: 1.8 } as const;
@@ -22,11 +24,12 @@ const cardVariants: Variants = {
   visible: { y: 0, opacity: 1, scale: 1, transition: spring },
 };
 
-// The projects array is now imported from @/lib/data/projects
-
 export function Work() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.15 });
+  const { t, language } = useLanguage();
+
+  const activeProjects = language === "ar" ? projectsAr : projects;
 
   return (
     <section
@@ -48,7 +51,7 @@ export function Work() {
             className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
             style={{ color: "var(--va-accent)" }}
           >
-            Selected Cases
+            {t("work.tag")}
           </motion.p>
           <motion.h2
             variants={cardVariants}
@@ -57,10 +60,10 @@ export function Work() {
               fontFamily: "var(--font-serif)",
               fontWeight: 500,
               color: "var(--va-ink)",
-              letterSpacing: "-0.03em",
+              letterSpacing: language === "ar" ? "0" : "-0.03em",
             }}
           >
-            Work that leaves a mark.
+            {t("work.title")}
           </motion.h2>
         </motion.div>
 
@@ -69,11 +72,11 @@ export function Work() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ ...spring, delay: 0.3 }}
-          whileHover={{ x: 4 }}
+          whileHover={{ x: language === "ar" ? -4 : 4 }}
           className="flex items-center gap-2 text-sm font-sans font-medium uppercase tracking-widest border-b pb-1 transition-colors hover:text-[var(--va-accent)] hover:border-[var(--va-accent)]"
           style={{ color: "var(--va-ink-muted)", borderColor: "var(--va-rule)" }}
         >
-          View full archive <ArrowUpRight size={16} />
+          {t("work.archive")} <ArrowUpRight size={16} className={language === "ar" ? "rotate-90" : ""} />
         </motion.a>
       </div>
 
@@ -84,7 +87,7 @@ export function Work() {
         animate={inView ? "visible" : "hidden"}
         className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10"
       >
-        {projects.map((project) => (
+        {activeProjects.map((project) => (
           <Link href={`/work/${project.slug}`} key={project.slug} className={`${project.colSpan}`}>
             <motion.div
               variants={cardVariants}
@@ -124,7 +127,7 @@ export function Work() {
                     className="p-4 rounded-full bg-va-paper shadow-xl"
                     style={{ color: "var(--va-accent)" }}
                   >
-                    <ArrowUpRight size={24} />
+                    <ArrowUpRight size={24} className={language === "ar" ? "rotate-90" : ""} />
                   </div>
                 </div>
               </div>

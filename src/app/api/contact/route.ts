@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
     if (!validatedData.success) {
       return NextResponse.json(
-        { error: "Invalid form data.", details: validatedData.error.errors },
+        { error: "Invalid form data.", details: validatedData.error.issues },
         { status: 400 }
       );
     }
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     // Note: You must verify your sending domain on Resend, or use 'onboarding@resend.dev' for testing
     const data = await resend.emails.send({
       from: "VisionArc Contact <onboarding@resend.dev>", // Replace with your verified domain (e.g., hello@visionarc.com)
-      to: ["hello@visionarc.com"], // Replace with your actual receiving email address
+      to: ["arc.sainai@gmail.com"], // Replace with your actual receiving email address
       replyTo: email,
       subject: `New Inquiry from ${name} - ${service}`,
       text: `

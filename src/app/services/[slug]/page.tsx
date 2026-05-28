@@ -12,15 +12,19 @@ import {
 } from "framer-motion";
 import {
   ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
   ChevronDown,
   Check,
   Sparkles,
 } from "lucide-react";
 import { services, iconMap } from "@/lib/data/services";
+import { servicesAr } from "@/lib/data/services_ar";
 import { projects } from "@/lib/data/projects";
+import { projectsAr } from "@/lib/data/projects_ar";
 import { Nav } from "@/components/human/Nav";
 import { Footer } from "@/components/human/Footer";
+import { useLanguage } from "@/lib/context/LanguageContext";
 
 /* ─── Animation presets ────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 90, damping: 28, mass: 1.5 } as const;
@@ -72,14 +76,19 @@ function RevealSection({
 export default function ServiceDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const service = services.find((s) => s.slug === slug);
+  const { t, language } = useLanguage();
+
+  const activeServices = language === "ar" ? servicesAr : services;
+  const service = activeServices.find((s) => s.slug === slug);
 
   if (!service) {
     notFound();
   }
 
-  const IconComponent = iconMap[service.iconName];
-  const relatedProjects = projects.filter((p) =>
+  const IconComponent = iconMap[service.iconName as "Globe" | "Diamond" | "BarChart3"];
+  
+  const activeProjects = language === "ar" ? projectsAr : projects;
+  const relatedProjects = activeProjects.filter((p) =>
     service.caseStudySlugs.includes(p.slug)
   );
 
@@ -133,9 +142,10 @@ function HeroSection({
   service,
   IconComponent,
 }: {
-  service: (typeof services)[0];
+  service: any;
   IconComponent: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
 }) {
+  const { t, language } = useLanguage();
   return (
     <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden">
       {/* Background image */}
@@ -151,10 +161,10 @@ function HeroSection({
         <div className="absolute inset-0 bg-gradient-to-b from-va-paper/60 via-va-paper/90 to-va-paper" />
       </div>
 
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 text-start">
         {/* Back link */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: language === "ar" ? 20 : -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ ...spring, delay: 0.1 }}
         >
@@ -163,7 +173,8 @@ function HeroSection({
             className="inline-flex items-center gap-2 text-sm font-sans font-medium mb-12 transition-colors hover:text-[var(--va-accent)]"
             style={{ color: "var(--va-ink-muted)" }}
           >
-            <ArrowLeft size={16} /> Back to Services
+            {language === "ar" ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}{" "}
+            {language === "ar" ? "العودة إلى الخدمات" : "Back to Services"}
           </Link>
         </motion.div>
 
@@ -186,12 +197,12 @@ function HeroSection({
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...spring, delay: 0.2 }}
-          className="text-5xl md:text-7xl lg:text-8xl leading-[1.05] mb-6 max-w-5xl"
+          className="text-5xl md:text-7xl lg:text-8xl leading-[1.05] mb-6 max-w-5xl text-start"
           style={{
             fontFamily: "var(--font-serif)",
             fontWeight: 500,
             color: "var(--va-ink)",
-            letterSpacing: "-0.03em",
+            letterSpacing: language === "ar" ? "0" : "-0.03em",
           }}
         >
           {service.title}
@@ -202,7 +213,7 @@ function HeroSection({
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...spring, delay: 0.3 }}
-          className="text-xl md:text-2xl font-sans font-medium max-w-2xl"
+          className="text-xl md:text-2xl font-sans font-medium max-w-2xl text-start"
           style={{ color: "var(--va-ink-muted)" }}
         >
           {service.subtitle}
@@ -213,7 +224,7 @@ function HeroSection({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...spring, delay: 0.45 }}
-          className="flex flex-wrap gap-4 mt-10"
+          className="flex flex-wrap gap-4 mt-10 justify-start"
         >
           <Link href="/#contact">
             <motion.span
@@ -223,10 +234,15 @@ function HeroSection({
               style={{
                 background: "var(--va-accent)",
                 color: "var(--va-paper)",
-                letterSpacing: "0.03em",
+                letterSpacing: language === "ar" ? "0" : "0.03em",
               }}
             >
-              Start a Project <ArrowUpRight size={16} />
+              {t("nav.cta")}{" "}
+              {language === "ar" ? (
+                <ArrowLeft size={16} className="rotate-45" />
+              ) : (
+                <ArrowUpRight size={16} />
+              )}
             </motion.span>
           </Link>
           <Link href="#pricing">
@@ -238,10 +254,10 @@ function HeroSection({
                 background: "var(--va-surface)",
                 color: "var(--va-ink)",
                 border: "1px solid var(--va-rule)",
-                letterSpacing: "0.03em",
+                letterSpacing: language === "ar" ? "0" : "0.03em",
               }}
             >
-              View Pricing
+              {language === "ar" ? "عرض الأسعار" : "View Pricing"}
             </motion.span>
           </Link>
         </motion.div>
@@ -295,18 +311,19 @@ function StatsSection({ stats }: { stats: { label: string; value: string }[] }) 
 
 /* ─── Overview ─────────────────────────────────────────────────────── */
 function OverviewSection({ description }: { description: string }) {
+  const { t, language } = useLanguage();
   return (
-    <RevealSection className="max-w-[1000px] mx-auto px-6 md:px-10 py-24 md:py-32">
+    <RevealSection className="max-w-[1000px] mx-auto px-6 md:px-10 py-24 md:py-32 text-start">
       <motion.p
         variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
+        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6 text-start"
         style={{ color: "var(--va-accent)" }}
       >
-        Overview
+        {language === "ar" ? "نظرة عامة" : "Overview"}
       </motion.p>
       <motion.p
         variants={fadeUp}
-        className="text-2xl md:text-3xl font-sans leading-[1.6] font-medium"
+        className="text-2xl md:text-3xl font-sans leading-[1.6] font-medium text-start"
         style={{ color: "var(--va-ink)" }}
       >
         {description}
@@ -321,26 +338,27 @@ function ProcessSection({
 }: {
   steps: { step: string; title: string; description: string }[];
 }) {
+  const { t, language } = useLanguage();
   return (
-    <RevealSection className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24 md:pb-32">
+    <RevealSection className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24 md:pb-32 text-start">
       <motion.p
         variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
+        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
         style={{ color: "var(--va-accent)" }}
       >
-        Our Process
+        {language === "ar" ? "خطوات العمل" : "Our Process"}
       </motion.p>
       <motion.h2
         variants={fadeUp}
-        className="text-4xl md:text-6xl mb-16"
+        className="text-4xl md:text-6xl mb-16 text-start"
         style={{
           fontFamily: "var(--font-serif)",
           fontWeight: 500,
           color: "var(--va-ink)",
-          letterSpacing: "-0.03em",
+          letterSpacing: language === "ar" ? "0" : "-0.03em",
         }}
       >
-        How we work
+        {language === "ar" ? "كيف نعمل معاً" : "How we work"}
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -348,7 +366,7 @@ function ProcessSection({
           <motion.div
             key={step.step}
             variants={scaleIn}
-            className="group relative p-8 md:p-10 rounded-2xl overflow-hidden"
+            className="group relative p-8 md:p-10 rounded-2xl overflow-hidden text-start flex flex-col justify-between"
             style={{
               background: "var(--va-surface)",
               border: "1px solid var(--va-rule)",
@@ -356,7 +374,7 @@ function ProcessSection({
           >
             {/* Step number watermark */}
             <span
-              className="absolute top-4 right-6 text-[6rem] md:text-[8rem] leading-none font-serif font-bold select-none pointer-events-none"
+              className={`absolute top-4 ${language === "ar" ? "left-6" : "right-6"} text-[6rem] md:text-[8rem] leading-none font-serif font-bold select-none pointer-events-none`}
               style={{
                 color: "var(--va-accent)",
                 opacity: 0.06,
@@ -365,18 +383,18 @@ function ProcessSection({
               {step.step}
             </span>
 
-            <div className="relative z-10">
+            <div className="relative z-10 text-start">
               <span
-                className="inline-block text-sm font-sans font-bold tracking-[0.2em] uppercase mb-4 px-3 py-1 rounded-full"
+                className="inline-block text-sm font-sans font-bold tracking-[0.2em] uppercase mb-4 px-3 py-1 rounded-full text-start"
                 style={{
                   background: "color-mix(in srgb, var(--va-accent) 12%, transparent)",
                   color: "var(--va-accent)",
                 }}
               >
-                Step {step.step}
+                {language === "ar" ? `الخطوة ${step.step}` : `Step ${step.step}`}
               </span>
               <h3
-                className="text-2xl md:text-3xl mb-4"
+                className="text-2xl md:text-3xl mb-4 text-start"
                 style={{
                   fontFamily: "var(--font-serif)",
                   fontWeight: 600,
@@ -386,7 +404,7 @@ function ProcessSection({
                 {step.title}
               </h3>
               <p
-                className="font-sans text-base leading-relaxed"
+                className="font-sans text-base leading-relaxed text-start"
                 style={{ color: "var(--va-ink-muted)" }}
               >
                 {step.description}
@@ -401,6 +419,7 @@ function ProcessSection({
 
 /* ─── Deliverables ─────────────────────────────────────────────────── */
 function DeliverablesSection({ deliverables }: { deliverables: string[] }) {
+  const { t, language } = useLanguage();
   return (
     <RevealSection
       className="w-full py-24 md:py-32"
@@ -414,25 +433,25 @@ function DeliverablesSection({ deliverables }: { deliverables: string[] }) {
           borderBottom: "1px solid var(--va-rule)",
         }}
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 text-start">
           <motion.p
             variants={fadeUp}
-            className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
+            className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
             style={{ color: "var(--va-accent)" }}
           >
-            What You Get
+            {language === "ar" ? "ما ستحصل عليه" : "What You Get"}
           </motion.p>
           <motion.h2
             variants={fadeUp}
-            className="text-4xl md:text-6xl mb-16"
+            className="text-4xl md:text-6xl mb-16 text-start"
             style={{
               fontFamily: "var(--font-serif)",
               fontWeight: 500,
               color: "var(--va-ink)",
-              letterSpacing: "-0.03em",
+              letterSpacing: language === "ar" ? "0" : "-0.03em",
             }}
           >
-            Deliverables
+            {t("services.deliverables")}
           </motion.h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -440,7 +459,7 @@ function DeliverablesSection({ deliverables }: { deliverables: string[] }) {
               <motion.div
                 key={item}
                 variants={fadeUp}
-                className="flex items-start gap-3 p-5 rounded-xl group transition-colors"
+                className="flex items-start gap-3 p-5 rounded-xl group transition-colors text-start"
                 style={{
                   background: "var(--va-paper)",
                   border: "1px solid var(--va-rule)",
@@ -455,7 +474,7 @@ function DeliverablesSection({ deliverables }: { deliverables: string[] }) {
                   <Check size={14} strokeWidth={2.5} className="text-va-accent" />
                 </span>
                 <span
-                  className="font-sans font-medium text-sm"
+                  className="font-sans font-medium text-sm text-start"
                   style={{ color: "var(--va-ink)" }}
                 >
                   {item}
@@ -475,48 +494,49 @@ function ToolsSection({
 }: {
   tools: { name: string; category: string }[];
 }) {
+  const { t, language } = useLanguage();
   return (
-    <RevealSection className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32">
+    <RevealSection className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32 text-start">
       <motion.p
         variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
+        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
         style={{ color: "var(--va-accent)" }}
       >
-        Tech Stack
+        {language === "ar" ? "الأدوات والتقنيات" : "Tech Stack"}
       </motion.p>
       <motion.h2
         variants={fadeUp}
-        className="text-4xl md:text-6xl mb-16"
+        className="text-4xl md:text-6xl mb-16 text-start"
         style={{
           fontFamily: "var(--font-serif)",
           fontWeight: 500,
           color: "var(--va-ink)",
-          letterSpacing: "-0.03em",
+          letterSpacing: language === "ar" ? "0" : "-0.03em",
         }}
       >
-        Tools & Technologies
+        {language === "ar" ? "التقنيات المستخدمة" : "Tools & Technologies"}
       </motion.h2>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 justify-start">
         {tools.map((tool) => (
           <motion.div
             key={tool.name}
             variants={fadeUp}
             whileHover={{ scale: 1.05, y: -2 }}
-            className="px-5 py-3 rounded-xl flex flex-col transition-shadow hover:shadow-lg"
+            className="px-5 py-3 rounded-xl flex flex-col transition-shadow hover:shadow-lg text-start"
             style={{
               background: "var(--va-surface)",
               border: "1px solid var(--va-rule)",
             }}
           >
             <span
-              className="font-sans font-semibold text-sm"
+              className="font-sans font-semibold text-sm text-start"
               style={{ color: "var(--va-ink)" }}
             >
               {tool.name}
             </span>
             <span
-              className="font-sans text-xs mt-0.5"
+              className="font-sans text-xs mt-0.5 text-start"
               style={{ color: "var(--va-ink-muted)" }}
             >
               {tool.category}
@@ -540,46 +560,49 @@ function PricingSection({
     highlighted?: boolean;
   }[];
 }) {
+  const { t, language } = useLanguage();
   return (
     <RevealSection
-      className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32"
+      className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32 text-start"
       id="pricing"
     >
       <motion.p
         variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
+        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
         style={{ color: "var(--va-accent)" }}
       >
-        Investment
+        {t("pricing.tag")}
       </motion.p>
       <motion.h2
         variants={fadeUp}
-        className="text-4xl md:text-6xl mb-6"
+        className="text-4xl md:text-6xl mb-6 text-start"
         style={{
           fontFamily: "var(--font-serif)",
           fontWeight: 500,
           color: "var(--va-ink)",
-          letterSpacing: "-0.03em",
+          letterSpacing: language === "ar" ? "0" : "-0.03em",
         }}
       >
-        Pricing
+        {language === "ar" ? "الاستثمار والتسعير" : "Pricing"}
       </motion.h2>
       <motion.p
         variants={fadeUp}
-        className="font-sans text-lg max-w-xl mb-16"
+        className="font-sans text-lg max-w-xl mb-16 text-start"
         style={{ color: "var(--va-ink-muted)" }}
       >
-        Transparent pricing. No hidden fees. Choose the tier that fits your goals.
+        {language === "ar"
+          ? "أسعار واضحة وعادلة. لا توجد رسوم خفية. اختر الباقة التي تدعم نمو عملك وتطلعاتك."
+          : "Transparent pricing. No hidden fees. Choose the tier that fits your goals."}
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
         {tiers.map((tier) => (
           <motion.div
             key={tier.name}
             variants={scaleIn}
             whileHover={{ y: -6 }}
             transition={spring}
-            className={`relative flex flex-col p-8 md:p-10 rounded-2xl transition-shadow ${
+            className={`relative flex flex-col p-8 md:p-10 rounded-2xl transition-shadow text-start ${
               tier.highlighted ? "shadow-2xl" : "shadow-md"
             }`}
             style={{
@@ -600,12 +623,12 @@ function PricingSection({
                   color: "var(--va-paper)",
                 }}
               >
-                <Sparkles size={12} /> Most Popular
+                <Sparkles size={12} /> {language === "ar" ? "الأكثر طلباً" : "Most Popular"}
               </span>
             )}
 
             <h3
-              className="text-lg font-sans font-bold uppercase tracking-widest mb-2"
+              className="text-lg font-sans font-bold uppercase tracking-widest mb-2 text-start"
               style={{
                 color: tier.highlighted ? "var(--va-paper)" : "var(--va-ink-muted)",
               }}
@@ -614,10 +637,8 @@ function PricingSection({
             </h3>
 
             <p
-              className="text-4xl md:text-5xl mb-4"
+              className="text-4xl md:text-5xl mb-4 text-start font-serif font-semibold"
               style={{
-                fontFamily: "var(--font-serif)",
-                fontWeight: 600,
                 color: tier.highlighted ? "var(--va-paper)" : "var(--va-accent)",
               }}
             >
@@ -625,7 +646,7 @@ function PricingSection({
             </p>
 
             <p
-              className="font-sans text-sm leading-relaxed mb-8"
+              className="font-sans text-sm leading-relaxed mb-8 text-start"
               style={{
                 color: tier.highlighted
                   ? "color-mix(in srgb, var(--va-paper) 70%, transparent)"
@@ -635,11 +656,11 @@ function PricingSection({
               {tier.description}
             </p>
 
-            <ul className="flex flex-col gap-3 mb-10 flex-1">
+            <ul className="flex flex-col gap-3 mb-10 flex-1 text-start">
               {tier.features.map((feature) => (
                 <li
                   key={feature}
-                  className="flex items-start gap-2 font-sans text-sm"
+                  className="flex items-start gap-2 font-sans text-sm text-start"
                   style={{
                     color: tier.highlighted ? "var(--va-paper)" : "var(--va-ink)",
                   }}
@@ -650,12 +671,12 @@ function PricingSection({
                     className="mt-0.5 flex-shrink-0"
                     style={{ color: "var(--va-accent)" }}
                   />
-                  {feature}
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
 
-            <Link href="/#contact" className="mt-auto">
+            <Link href="/#contact" className="mt-auto block">
               <motion.span
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -670,10 +691,15 @@ function PricingSection({
                   border: tier.highlighted
                     ? "none"
                     : "1px solid var(--va-rule)",
-                  letterSpacing: "0.03em",
+                  letterSpacing: language === "ar" ? "0" : "0.03em",
                 }}
               >
-                Get Started <ArrowUpRight size={14} />
+                {language === "ar" ? "ابدأ الآن" : "Get Started"}{" "}
+                {language === "ar" ? (
+                  <ArrowLeft size={14} className="rotate-45" />
+                ) : (
+                  <ArrowUpRight size={14} />
+                )}
               </motion.span>
             </Link>
           </motion.div>
@@ -686,27 +712,28 @@ function PricingSection({
 /* ─── FAQ ───────────────────────────────────────────────────────────── */
 function FAQSection({ faq }: { faq: { question: string; answer: string }[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { t, language } = useLanguage();
 
   return (
-    <RevealSection className="max-w-[900px] mx-auto px-6 md:px-10 py-24 md:py-32">
+    <RevealSection className="max-w-[900px] mx-auto px-6 md:px-10 py-24 md:py-32 text-start">
       <motion.p
         variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
+        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
         style={{ color: "var(--va-accent)" }}
       >
-        Common Questions
+        {t("faq.common")}
       </motion.p>
       <motion.h2
         variants={fadeUp}
-        className="text-4xl md:text-6xl mb-16"
+        className="text-4xl md:text-6xl mb-16 text-start"
         style={{
           fontFamily: "var(--font-serif)",
           fontWeight: 500,
           color: "var(--va-ink)",
-          letterSpacing: "-0.03em",
+          letterSpacing: language === "ar" ? "0" : "-0.03em",
         }}
       >
-        FAQ
+        {t("faq.tag")}
       </motion.h2>
 
       <div className="flex flex-col gap-3">
@@ -724,10 +751,10 @@ function FAQSection({ faq }: { faq: { question: string; answer: string }[] }) {
             >
               <button
                 onClick={() => setOpenIndex(isOpen ? null : i)}
-                className="w-full flex items-center justify-between p-6 text-left"
+                className="w-full flex items-center justify-between p-6 text-start"
               >
                 <span
-                  className="font-sans font-semibold text-base pr-4"
+                  className="font-sans font-semibold text-base pe-4 text-start"
                   style={{ color: "var(--va-ink)" }}
                 >
                   {item.question}
@@ -754,7 +781,7 @@ function FAQSection({ faq }: { faq: { question: string; answer: string }[] }) {
                     className="overflow-hidden"
                   >
                     <p
-                      className="px-6 pb-6 font-sans text-base leading-relaxed"
+                      className="px-6 pb-6 font-sans text-base leading-relaxed text-start"
                       style={{ color: "var(--va-ink-muted)" }}
                     >
                       {item.answer}
@@ -774,28 +801,29 @@ function FAQSection({ faq }: { faq: { question: string; answer: string }[] }) {
 function RelatedWorkSection({
   projects: relatedProjects,
 }: {
-  projects: typeof projects;
+  projects: any[];
 }) {
+  const { t, language } = useLanguage();
   return (
-    <RevealSection className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32">
+    <RevealSection className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32 text-start">
       <motion.p
         variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4"
+        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
         style={{ color: "var(--va-accent)" }}
       >
-        See It In Action
+        {language === "ar" ? "شاهد أعمالنا في الواقع" : "See It In Action"}
       </motion.p>
       <motion.h2
         variants={fadeUp}
-        className="text-4xl md:text-6xl mb-16"
+        className="text-4xl md:text-6xl mb-16 text-start"
         style={{
           fontFamily: "var(--font-serif)",
           fontWeight: 500,
           color: "var(--va-ink)",
-          letterSpacing: "-0.03em",
+          letterSpacing: language === "ar" ? "0" : "-0.03em",
         }}
       >
-        Related Work
+        {language === "ar" ? "مشاريع ذات صلة" : "Related Work"}
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -821,15 +849,15 @@ function RelatedWorkSection({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-va-paper via-transparent to-transparent opacity-80" />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-8">
+                <div className="absolute bottom-0 left-0 right-0 p-8 text-start">
                   <span
-                    className="text-xs tracking-[0.2em] uppercase font-sans font-bold mb-2 block"
+                    className="text-xs tracking-[0.2em] uppercase font-sans font-bold mb-2 block text-start"
                     style={{ color: "var(--va-accent)" }}
                   >
                     {project.category}
                   </span>
                   <h3
-                    className="text-2xl md:text-3xl flex items-center gap-3"
+                    className="text-2xl md:text-3xl flex items-center gap-3 text-start"
                     style={{
                       fontFamily: "var(--font-serif)",
                       fontWeight: 600,
@@ -837,11 +865,19 @@ function RelatedWorkSection({
                     }}
                   >
                     {project.title}
-                    <ArrowUpRight
-                      size={20}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ color: "var(--va-accent)" }}
-                    />
+                    {language === "ar" ? (
+                      <ArrowLeft
+                        size={20}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity rotate-45"
+                        style={{ color: "var(--va-accent)" }}
+                      />
+                    ) : (
+                      <ArrowUpRight
+                        size={20}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        style={{ color: "var(--va-accent)" }}
+                      />
+                    )}
                   </h3>
                 </div>
               </motion.div>
@@ -855,6 +891,7 @@ function RelatedWorkSection({
 
 /* ─── CTA ──────────────────────────────────────────────────────────── */
 function CTASection() {
+  const { t, language } = useLanguage();
   return (
     <RevealSection className="w-full py-24 md:py-32">
       <div
@@ -883,7 +920,7 @@ function CTASection() {
               className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
               style={{ color: "var(--va-accent)" }}
             >
-              Ready to start?
+              {language === "ar" ? "جاهز للبدء؟" : "Ready to start?"}
             </p>
             <h2
               className="text-4xl md:text-6xl lg:text-7xl mb-6"
@@ -891,19 +928,21 @@ function CTASection() {
                 fontFamily: "var(--font-serif)",
                 fontWeight: 500,
                 color: "var(--va-paper)",
-                letterSpacing: "-0.03em",
+                letterSpacing: language === "ar" ? "0" : "-0.03em",
               }}
             >
-              Let&apos;s build something{" "}
+              {language === "ar" ? "دعنا نبني شيئاً " : "Let's build something "}
               <em className="text-editorial text-gradient-neon" style={{ fontStyle: "italic" }}>
-                extraordinary.
+                {language === "ar" ? "استثنائياً." : "extraordinary."}
               </em>
             </h2>
             <p
-              className="font-sans text-lg max-w-xl mx-auto mb-10"
+              className="font-sans text-lg max-w-xl mx-auto mb-10 text-center"
               style={{ color: "color-mix(in srgb, var(--va-paper) 60%, transparent)" }}
             >
-              Tell us about your project and we&apos;ll get back to you within 24 hours with a tailored proposal.
+              {language === "ar"
+                ? "أخبرنا عن مشروعك وسنعاود الاتصال بك خلال ٢٤ ساعة بعرض عمل مخصص وجدول زمني للإطلاق."
+                : "Tell us about your project and we'll get back to you within 24 hours with a tailored proposal."}
             </p>
             <Link href="/#contact">
               <motion.span
@@ -913,10 +952,15 @@ function CTASection() {
                 style={{
                   background: "var(--va-accent)",
                   color: "var(--va-paper)",
-                  letterSpacing: "0.03em",
+                  letterSpacing: language === "ar" ? "0" : "0.03em",
                 }}
               >
-                Start a Project <ArrowUpRight size={18} />
+                {t("nav.cta")}{" "}
+                {language === "ar" ? (
+                  <ArrowLeft size={18} className="rotate-45" />
+                ) : (
+                  <ArrowUpRight size={18} />
+                )}
               </motion.span>
             </Link>
           </div>
