@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Float, MeshDistortMaterial } from "@react-three/drei";
+import { Float, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 /* Suppress THREE.Clock deprecation from @react-three/fiber internals */
@@ -77,9 +77,6 @@ export function FluidRibbon() {
         />
 
         <RibbonMesh />
-        
-        {/* Soft studio environment reflection to give it that premium matte finish */}
-        <Environment preset="studio" environmentIntensity={0.1} />
       </Canvas>
     </div>
   );
