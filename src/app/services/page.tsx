@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
-import { Globe, Diamond, BarChart3, ArrowUpRight, ArrowLeft } from "lucide-react";
+import { Globe, Diamond, BarChart3, Film, ArrowUpRight, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/human/Nav";
@@ -35,7 +35,19 @@ const servicesList = [
     title: "Bespoke Web Development",
     subtitle: "Engineered to be felt, not just seen.",
     desc: "We build fast, tactile digital experiences. No templates, no bloat. Just custom Next.js architecture paired with nuanced motion design that respects your user's time and attention.",
-    deliverables: ["Next.js Architecture", "WebGL / Three.js", "Framer Motion", "Headless CMS Integration"],
+    deliverables: [
+      "Next.js Architecture",
+      "WebGL / Three.js",
+      "Framer Motion",
+      "Headless CMS Integration",
+      "Mobile App Development",
+      "UI/UX Design",
+      "E-commerce Solutions",
+      "Custom Software Development",
+      "Cloud Computing and Hosting",
+      "Software Testing and Quality Assurance",
+      "User Support and Maintenance",
+    ],
     price: "Starting at $8,000",
     icon: Globe,
     image: "/images/studio_desk.png",
@@ -49,7 +61,25 @@ const servicesList = [
     title: "Identity & Branding",
     subtitle: "Iconic systems built to last decades.",
     desc: "Visual systems that speak louder than words. We create iconic, minimalist identities rooted in timeless design principles.",
-    deliverables: ["Brand Strategy", "Logo & Typography", "Color Systems", "Brand Guidelines"],
+    deliverables: [
+      "Brand Strategy",
+      "Logo & Typography",
+      "Color Systems",
+      "Brand Guidelines",
+      "Brand Strategy Development",
+      "Brand Identity Design",
+      "Brand Naming and Tagline Development",
+      "Brand Messaging and Voice",
+      "Brand Positioning and Differentiation",
+      "Brand Storytelling",
+      "Brand Collateral Design",
+      "Brand Guidelines and Visual Identity Systems",
+      "Brand Experience Design",
+      "Rebranding and Brand Refresh",
+      "Brand Audits and Assessments",
+      "Brand Communications Strategy",
+      "Brand Launches and Campaigns",
+    ],
     price: "Starting at $5,000",
     icon: Diamond,
     image: "/images/work_branding.png",
@@ -63,13 +93,57 @@ const servicesList = [
     title: "Media Buying & Strategy",
     subtitle: "Performance marketing that actually performs.",
     desc: "We don't just design; we distribute. Our performance team scales your brand through highly targeted, high-converting ad campaigns across Meta and Google.",
-    deliverables: ["Meta Ads Management", "Google Ads", "Creative Testing", "Conversion Rate Optimization"],
+    deliverables: [
+      "Meta Ads Management",
+      "Google Ads",
+      "Creative Testing",
+      "Conversion Rate Optimization",
+      "Search Engine Optimization (SEO)",
+      "Social Media Marketing",
+      "Email Marketing",
+      "Content Marketing",
+      "Graphic Design",
+      "Influencer Marketing",
+      "E-commerce Solutions",
+      "Analytics and Reporting",
+      "Print Advertising",
+      "Television Advertising",
+      "Outdoor Advertising",
+      "Event Marketing",
+      "Public Relations (PR)",
+    ],
     price: "Starting at $3,000/mo",
     icon: BarChart3,
     image: "/images/work_ecommerce.png",
     stats: [
       { label: "Ad Spend Managed", value: "$4M+" },
       { label: "Average ROAS", value: "5.2x" },
+    ],
+  },
+  {
+    slug: "production",
+    title: "Exceptional Media Production",
+    subtitle: "Bringing visual stories to life.",
+    desc: "High-impact visual production tailored for modern platforms. From photo and video shoots to set design and post-production, we deliver stunning visual assets that command attention.",
+    deliverables: [
+      "Video Production",
+      "Commercial Production",
+      "Animation and Motion Graphics",
+      "Photography",
+      "Print Production",
+      "Audio Production",
+      "Event Production",
+      "Set Design and Construction",
+      "Post-Production Services",
+      "Production Management",
+      "Visual Effects (VFX)",
+    ],
+    price: "Starting at $4,000",
+    icon: Film,
+    image: "/images/media_buying.png",
+    stats: [
+      { label: "Projects Produced", value: "120+" },
+      { label: "Client Satisfaction", value: "98%" },
     ],
   },
 ];
@@ -287,13 +361,7 @@ export default function ServicesPage() {
                             </div>
 
                             {/* Price & CTA */}
-                            <div className="flex items-center justify-between">
-                              <span
-                                className="font-serif text-xl"
-                                style={{ color: "var(--va-ink)" }}
-                              >
-                                {service.price}
-                              </span>
+                            <div className="flex items-center justify-end">
                               <span
                                 className="inline-flex items-center gap-2 font-sans text-sm font-semibold transition-transform"
                                 style={{ color: "var(--va-accent)" }}

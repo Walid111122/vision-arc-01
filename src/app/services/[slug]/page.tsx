@@ -85,7 +85,7 @@ export default function ServiceDetailPage() {
     notFound();
   }
 
-  const IconComponent = iconMap[service.iconName as "Globe" | "Diamond" | "BarChart3"];
+  const IconComponent = iconMap[service.iconName as "Globe" | "Diamond" | "BarChart3" | "Film"];
   
   const activeProjects = language === "ar" ? projectsAr : projects;
   const relatedProjects = activeProjects.filter((p) =>
@@ -95,6 +95,34 @@ export default function ServiceDetailPage() {
   return (
     <>
       <Nav />
+
+      {/* Sticky Back Button */}
+      <div
+        className={`fixed z-30 transition-all duration-300 bottom-6 lg:bottom-auto lg:top-32 ${
+          language === "ar"
+            ? "right-6 lg:right-8 xl:right-16"
+            : "left-6 lg:left-8 xl:left-16"
+        }`}
+      >
+        <Link
+          href="/services"
+          className="flex items-center justify-center w-12 h-12 rounded-full border shadow-lg backdrop-blur-md transition-all duration-300 hover:border-[var(--va-accent)] hover:text-[var(--va-accent)] cursor-pointer group"
+          style={{
+            borderColor: "var(--va-rule)",
+            background: "color-mix(in srgb, var(--va-paper) 85%, transparent)",
+            color: "var(--va-ink)",
+          }}
+          aria-label={language === "ar" ? "العودة إلى الخدمات" : "Back to Services"}
+          title={language === "ar" ? "العودة إلى الخدمات" : "Back to Services"}
+        >
+          {language === "ar" ? (
+            <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+          ) : (
+            <ArrowLeft size={18} className="group-hover:-translate-x-0.5 transition-transform" />
+          )}
+        </Link>
+      </div>
+
       <main className="w-full relative z-10">
         {/* ── HERO ───────────────────────────────────────────────────── */}
         <HeroSection service={service} IconComponent={IconComponent} />
@@ -114,8 +142,7 @@ export default function ServiceDetailPage() {
         {/* ── TOOLS ──────────────────────────────────────────────────── */}
         <ToolsSection tools={service.tools} />
 
-        {/* ── PRICING ────────────────────────────────────────────────── */}
-        <PricingSection tiers={service.pricingTiers} />
+
 
         {/* ── FAQ ────────────────────────────────────────────────────── */}
         <FAQSection faq={service.faq} />
@@ -245,7 +272,7 @@ function HeroSection({
               )}
             </motion.span>
           </Link>
-          <Link href="#pricing">
+          <Link href="/pricing">
             <motion.span
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -548,166 +575,6 @@ function ToolsSection({
   );
 }
 
-/* ─── Pricing ──────────────────────────────────────────────────────── */
-function PricingSection({
-  tiers,
-}: {
-  tiers: {
-    name: string;
-    price: string;
-    description: string;
-    features: string[];
-    highlighted?: boolean;
-  }[];
-}) {
-  const { t, language } = useLanguage();
-  return (
-    <RevealSection
-      className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32 text-start"
-      id="pricing"
-    >
-      <motion.p
-        variants={fadeUp}
-        className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-4 text-start"
-        style={{ color: "var(--va-accent)" }}
-      >
-        {t("pricing.tag")}
-      </motion.p>
-      <motion.h2
-        variants={fadeUp}
-        className="text-4xl md:text-6xl mb-6 text-start"
-        style={{
-          fontFamily: "var(--font-serif)",
-          fontWeight: 500,
-          color: "var(--va-ink)",
-          letterSpacing: language === "ar" ? "0" : "-0.03em",
-        }}
-      >
-        {language === "ar" ? "الاستثمار والتسعير" : "Pricing"}
-      </motion.h2>
-      <motion.p
-        variants={fadeUp}
-        className="font-sans text-lg max-w-xl mb-16 text-start"
-        style={{ color: "var(--va-ink-muted)" }}
-      >
-        {language === "ar"
-          ? "أسعار واضحة وعادلة. لا توجد رسوم خفية. اختر الباقة التي تدعم نمو عملك وتطلعاتك."
-          : "Transparent pricing. No hidden fees. Choose the tier that fits your goals."}
-      </motion.p>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-        {tiers.map((tier) => (
-          <motion.div
-            key={tier.name}
-            variants={scaleIn}
-            whileHover={{ y: -6 }}
-            transition={spring}
-            className={`relative flex flex-col p-8 md:p-10 rounded-2xl transition-shadow text-start ${
-              tier.highlighted ? "shadow-2xl" : "shadow-md"
-            }`}
-            style={{
-              background: tier.highlighted
-                ? "var(--va-ink)"
-                : "var(--va-surface)",
-              border: tier.highlighted
-                ? "1px solid var(--va-accent)"
-                : "1px solid var(--va-rule)",
-            }}
-          >
-            {/* Popular badge */}
-            {tier.highlighted && (
-              <span
-                className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-4 py-1 rounded-full text-xs font-sans font-bold uppercase tracking-widest"
-                style={{
-                  background: "var(--va-accent)",
-                  color: "var(--va-paper)",
-                }}
-              >
-                <Sparkles size={12} /> {language === "ar" ? "الأكثر طلباً" : "Most Popular"}
-              </span>
-            )}
-
-            <h3
-              className="text-lg font-sans font-bold uppercase tracking-widest mb-2 text-start"
-              style={{
-                color: tier.highlighted ? "var(--va-paper)" : "var(--va-ink-muted)",
-              }}
-            >
-              {tier.name}
-            </h3>
-
-            <p
-              className="text-4xl md:text-5xl mb-4 text-start font-serif font-semibold"
-              style={{
-                color: tier.highlighted ? "var(--va-paper)" : "var(--va-accent)",
-              }}
-            >
-              {tier.price}
-            </p>
-
-            <p
-              className="font-sans text-sm leading-relaxed mb-8 text-start"
-              style={{
-                color: tier.highlighted
-                  ? "color-mix(in srgb, var(--va-paper) 70%, transparent)"
-                  : "var(--va-ink-muted)",
-              }}
-            >
-              {tier.description}
-            </p>
-
-            <ul className="flex flex-col gap-3 mb-10 flex-1 text-start">
-              {tier.features.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-start gap-2 font-sans text-sm text-start"
-                  style={{
-                    color: tier.highlighted ? "var(--va-paper)" : "var(--va-ink)",
-                  }}
-                >
-                  <Check
-                    size={16}
-                    strokeWidth={2.5}
-                    className="mt-0.5 flex-shrink-0"
-                    style={{ color: "var(--va-accent)" }}
-                  />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <Link href="/#contact" className="mt-auto block">
-              <motion.span
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-sans font-semibold rounded-lg"
-                style={{
-                  background: tier.highlighted
-                    ? "var(--va-accent)"
-                    : "var(--va-paper)",
-                  color: tier.highlighted
-                    ? "var(--va-paper)"
-                    : "var(--va-ink)",
-                  border: tier.highlighted
-                    ? "none"
-                    : "1px solid var(--va-rule)",
-                  letterSpacing: language === "ar" ? "0" : "0.03em",
-                }}
-              >
-                {language === "ar" ? "ابدأ الآن" : "Get Started"}{" "}
-                {language === "ar" ? (
-                  <ArrowLeft size={14} className="rotate-45" />
-                ) : (
-                  <ArrowUpRight size={14} />
-                )}
-              </motion.span>
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-    </RevealSection>
-  );
-}
 
 /* ─── FAQ ───────────────────────────────────────────────────────────── */
 function FAQSection({ faq }: { faq: { question: string; answer: string }[] }) {

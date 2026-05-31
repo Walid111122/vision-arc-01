@@ -5,9 +5,49 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, ArrowLeft, CheckCircle2, ChevronRight, XCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, ChevronRight, XCircle, Phone } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations/contact";
 import { useLanguage } from "@/lib/context/LanguageContext";
+
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number | string;
+}
+
+const FacebookIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
+const InstagramIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
 
 /* ─── Spring config ─────────────────────────────────────────────────────── */
 const spring = { type: "spring", stiffness: 200, damping: 24, mass: 1 } as const;
@@ -176,7 +216,7 @@ function ContactFormInner() {
 
         {/* Progress Indicator */}
         {step < 4 && (
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mb-8">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
@@ -189,6 +229,43 @@ function ContactFormInner() {
             ))}
           </div>
         )}
+
+        {/* Direct Contact Channels */}
+        <div className="flex flex-col gap-4 pt-8 border-t" style={{ borderColor: "var(--va-rule)" }}>
+          <h4 className="text-xs tracking-[0.2em] uppercase font-sans mb-1" style={{ color: "var(--va-ink)" }}>
+            {language === "ar" ? "اتصال مباشر" : "Direct Channels"}
+          </h4>
+          <div className="flex flex-col gap-3">
+            <a
+              href="tel:+201094366342"
+              className="flex items-center gap-3 text-sm font-sans w-fit hover:opacity-70 transition-opacity"
+              style={{ color: "var(--va-ink-muted)" }}
+            >
+              <Phone size={16} className="text-[var(--va-accent)]" />
+              <span dir="ltr">+20 10 94366342</span>
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61584695491534"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-sm font-sans w-fit hover:opacity-70 transition-opacity"
+              style={{ color: "var(--va-ink-muted)" }}
+            >
+              <FacebookIcon size={16} className="text-[var(--va-accent)]" />
+              <span>Facebook</span>
+            </a>
+            <a
+              href="https://www.instagram.com/visionarcagency/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-sm font-sans w-fit hover:opacity-70 transition-opacity"
+              style={{ color: "var(--va-ink-muted)" }}
+            >
+              <InstagramIcon size={16} className="text-[var(--va-accent)]" />
+              <span>Instagram</span>
+            </a>
+          </div>
+        </div>
       </motion.div>
 
       {/* ── Right Column: Interactive Form ──────────────────────────────── */}

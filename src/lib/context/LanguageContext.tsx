@@ -20,9 +20,20 @@ const dictionary: Record<Language, Record<string, string>> = {
     "nav.work": "Work",
     "nav.services": "Services",
     "nav.pricing": "Pricing",
+    "nav.blog": "Blog",
     "nav.about": "About",
     "nav.contact": "Contact",
     "nav.cta": "Start a project",
+
+    // Blog Landing Page & Detail Page
+    "blog.tag": "Insights & News",
+    "blog.title": "Our latest thinking.",
+    "blog.title.italic": "Crafted ideas.",
+    "blog.desc": "Exploring the boundaries of technology, design, and conversion optimization. Read our latest articles written by our specialized crew.",
+    "blog.readTime": "min read",
+    "blog.back": "Back to Blog",
+    "blog.author": "Written by",
+    "blog.category.all": "All Articles",
 
     // Hero Section
     "hero.eyebrow": "Digital Agency — Est. 2024",
@@ -45,7 +56,7 @@ const dictionary: Record<Language, Record<string, string>> = {
     "services.tag": "What We Do",
     "services.title": "Our capabilities",
     "services.title1": "We don't do everything. ",
-    "services.title2": "We do three things, exceptionally well.",
+    "services.title2": "We do four things, exceptionally well.",
     "services.desc": "Our approach is intentionally narrow. By focusing our craft, we deliver results that feel considered, native, and undeniably human.",
     "services.accordion.cta": "Explore Service",
     "services.deliverables": "Deliverables",
@@ -156,9 +167,20 @@ const dictionary: Record<Language, Record<string, string>> = {
     "nav.work": "أعمالنا",
     "nav.services": "خدماتنا",
     "nav.pricing": "الأسعار",
+    "nav.blog": "المدونة",
     "nav.about": "من نحن",
     "nav.contact": "اتصل بنا",
     "nav.cta": "ابدأ مشروعك",
+
+    // Blog Landing Page & Detail Page
+    "blog.tag": "مقالات وأفكار",
+    "blog.title": "أحدث مقالاتنا",
+    "blog.title.italic": "وأفكارنا الإبداعية.",
+    "blog.desc": "نستكشف حدود التكنولوجيا، والتصميم، وتحسين معدلات التحويل. اقرأ مقالاتنا المكتوبة بأيدي فريقنا المتخصص.",
+    "blog.readTime": "دقائق قراءة",
+    "blog.back": "العودة للمدونة",
+    "blog.author": "بقلم",
+    "blog.category.all": "جميع المقالات",
 
     // Hero Section
     "hero.eyebrow": "وكالة رقمية — تأسست عام ٢٠٢٤",
@@ -181,7 +203,7 @@ const dictionary: Record<Language, Record<string, string>> = {
     "services.tag": "ماذا نقدم",
     "services.title": "مجالات خبرتنا",
     "services.title1": "نحن لا نقدم كل شيء. ",
-    "services.title2": "بل نقدم ثلاثة أشياء، بتميز استثنائي.",
+    "services.title2": "بل نقدم أربعة أشياء، بتميز استثنائي.",
     "services.desc": "نهجنا ضيق ومحدد عن قصد. من خلال تركيز خبرتنا، نقدم نتائج مدروسة وفعالة وملموسة للغاية.",
     "services.accordion.cta": "اكتشف الخدمة",
     "services.deliverables": "مخرجات العمل",

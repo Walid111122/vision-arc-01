@@ -1,4 +1,4 @@
-import { Globe, Diamond, BarChart3 } from "lucide-react";
+import { Globe, Diamond, BarChart3, Film } from "lucide-react";
 
 export interface ProcessStep {
   step: string;
@@ -25,7 +25,7 @@ export interface Service {
   subtitle: string;
   description: string;
   longDescription: string;
-  iconName: "Globe" | "Diamond" | "BarChart3";
+  iconName: "Globe" | "Diamond" | "BarChart3" | "Film";
   heroImage: string;
   stats: { label: string; value: string }[];
   process: ProcessStep[];
@@ -40,6 +40,7 @@ export const iconMap = {
   Globe,
   Diamond,
   BarChart3,
+  Film,
 };
 
 export const services: Service[] = [
@@ -94,6 +95,13 @@ export const services: Service[] = [
       "SEO & Performance Optimization",
       "Analytics & Tracking Setup",
       "6-Month Post-Launch Support",
+      "Mobile App Development",
+      "UI/UX Design",
+      "E-commerce Solutions",
+      "Custom Software Development",
+      "Cloud Computing and Hosting",
+      "Software Testing and Quality Assurance",
+      "User Support and Maintenance",
     ],
     tools: [
       { name: "Next.js", category: "Framework" },
@@ -227,6 +235,19 @@ export const services: Service[] = [
       "Social Media Templates",
       "Business Card & Stationery",
       "Brand Asset Library",
+      "Brand Strategy Development",
+      "Brand Identity Design",
+      "Brand Naming and Tagline Development",
+      "Brand Messaging and Voice",
+      "Brand Positioning and Differentiation",
+      "Brand Storytelling",
+      "Brand Collateral Design",
+      "Brand Guidelines and Visual Identity Systems",
+      "Brand Experience Design",
+      "Rebranding and Brand Refresh",
+      "Brand Audits and Assessments",
+      "Brand Communications Strategy",
+      "Brand Launches and Campaigns",
     ],
     tools: [
       { name: "Figma", category: "Design" },
@@ -357,6 +378,19 @@ export const services: Service[] = [
       "Weekly Performance Reports",
       "Monthly Strategy Sessions",
       "Conversion Tracking & Attribution",
+      "Search Engine Optimization (SEO)",
+      "Social Media Marketing",
+      "Email Marketing",
+      "Content Marketing",
+      "Graphic Design",
+      "Influencer Marketing",
+      "E-commerce Solutions",
+      "Analytics and Reporting",
+      "Print Advertising",
+      "Television Advertising",
+      "Outdoor Advertising",
+      "Event Marketing",
+      "Public Relations (PR)",
     ],
     tools: [
       { name: "Meta Ads Manager", category: "Ads" },
@@ -437,5 +471,137 @@ export const services: Service[] = [
       },
     ],
     caseStudySlugs: ["lumina"],
+  },
+  {
+    slug: "production",
+    title: "Exceptional Media Production",
+    subtitle: "Bringing visual stories to life.",
+    description:
+      "High-impact visual production tailored for modern platforms. From photo and video shoots to set design and post-production, we deliver stunning visual assets that command attention.",
+    longDescription:
+      "We bring your brand's story to life through high-end production services. We handle everything from creative concepting, scriptwriting, and location scouting to photography, cinematography, event production, set construction, and advanced post-production. Whether it's a commercial campaign, product shoot, animation, or physical event space, our production team crafts visually striking assets that elevate your brand's presence and engage your audience.",
+    iconName: "Film",
+    heroImage: "/images/media_buying.png",
+    stats: [
+      { label: "Projects Produced", value: "120+" },
+      { label: "High-End Commercials", value: "35+" },
+      { label: "Client Satisfaction", value: "98%" },
+      { label: "Team Members", value: "15+" },
+    ],
+    process: [
+      {
+        step: "01",
+        title: "Pre-Production & Concepting",
+        description:
+          "We define the creative direction, script, storyboard, budget, and logistical timeline. We handle casting, location scouting, and styling.",
+      },
+      {
+        step: "02",
+        title: "Production & Shooting",
+        description:
+          "Our experienced crew shoots on location or in-studio using state-of-the-art camera, lighting, and audio equipment to capture beautiful visuals.",
+      },
+      {
+        step: "03",
+        title: "Post-Production",
+        description:
+          "We edit, color grade, design sound/audio, and add visual effects (VFX) or animation to turn raw footage into a polished masterpiece.",
+      },
+      {
+        step: "04",
+        title: "Delivery & Campaign Launch",
+        description:
+          "We deliver final assets formatted for specific channels (social media, TV, print) and support the campaign launch to ensure maximum engagement.",
+      },
+    ],
+    deliverables: [
+      "Video Production",
+      "Commercial Production",
+      "Animation and Motion Graphics",
+      "Photography",
+      "Print Production",
+      "Audio Production",
+      "Event Production",
+      "Set Design and Construction",
+      "Post-Production Services",
+      "Production Management",
+      "Visual Effects (VFX)",
+    ],
+    tools: [
+      { name: "RED / ARRI Cameras", category: "Cinematography" },
+      { name: "Adobe Premiere Pro", category: "Video Editing" },
+      { name: "DaVinci Resolve", category: "Color Grading" },
+      { name: "Adobe After Effects", category: "VFX & Motion" },
+      { name: "Blender", category: "3D & Animation" },
+      { name: "Adobe Photoshop", category: "Photo Editing" },
+      { name: "Pro Tools", category: "Audio Engineering" },
+    ],
+    pricingTiers: [
+      {
+        name: "Social Content",
+        price: "$4,000",
+        description: "Perfect for brands needing high-quality social media photography and short-form video content.",
+        features: [
+          "1-day shoot",
+          "Short-form videos (TikTok/Reels)",
+          "Professional photography session",
+          "Basic editing and color grading",
+          "1 round of revisions",
+          "Delivery in 10 business days",
+        ],
+      },
+      {
+        name: "Commercial Campaign",
+        price: "$10,000",
+        description: "Full production campaign for hero commercials, brand videos, and product launches.",
+        features: [
+          "2-day shoot",
+          "1 main commercial video (60s)",
+          "3 cutdowns for social ads (15s)",
+          "Full-scale pre-production & concepting",
+          "Advanced color grading & sound design",
+          "Professional styling & lighting crew",
+          "2 rounds of revisions",
+        ],
+        highlighted: true,
+      },
+      {
+        name: "Enterprise Production",
+        price: "Custom",
+        description: "Bespoke high-end productions, CGI/VFX animation, set construction, or large-scale events.",
+        features: [
+          "Multi-day/multi-location shoots",
+          "Advanced CGI, VFX & 3D animation",
+          "Custom set design and physical construction",
+          "Large-scale event coverage and management",
+          "Full post-production pipeline",
+          "Unlimited revisions on concepts",
+          "Dedicated production director",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: "Do you handle location scouting and casting?",
+        answer:
+          "Yes, we handle all aspects of pre-production, including scouting suitable locations, securing permits, and casting actors or models based on the creative brief.",
+      },
+      {
+        question: "Can we shoot in different countries or locations?",
+        answer:
+          "Absolutely. Our production team is equipped to travel and handle logistics for shoots across regions, coordinating local permits and local crew support where needed.",
+      },
+      {
+        question: "What is the typical turnaround time for post-production?",
+        answer:
+          "For social content, it typically takes 5–10 business days. Commercial campaigns run 3–5 weeks depending on the complexity of CGI, VFX, color grading, and approvals.",
+      },
+      {
+        question: "Do we own the full copyright to the produced media?",
+        answer:
+          "Yes. Once the project is fully paid and delivered, you receive full commercial usage rights for all final videos, photography, and audio assets.",
+      },
+    ],
+    caseStudySlugs: [],
   },
 ];
