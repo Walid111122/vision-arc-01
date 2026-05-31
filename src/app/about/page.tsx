@@ -310,51 +310,76 @@ export default function AboutPage() {
         {/* ── HERO SECTION ───────────────────────────────────────────── */}
         <section className="relative pt-28 pb-12 md:pt-36 md:pb-16">
           <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 text-start">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.1 }}
-              className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
-              style={{ color: "var(--va-accent)" }}
-            >
-              {t.heroTag}
-            </motion.p>
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.2 }}
-              className="text-5xl md:text-7xl lg:text-8xl leading-[1.05] mb-6 max-w-4xl"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontWeight: 500,
-                color: "var(--va-ink)",
-                letterSpacing: language === "ar" ? "0" : "-0.03em",
-              }}
-            >
-              {t.heroTitle}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.3 }}
-              className="text-xl md:text-2xl font-sans font-semibold mb-10 max-w-2xl"
-              style={{ color: "var(--va-accent)" }}
-            >
-              {t.heroSubtitle}
-            </motion.p>
-            <div className="flex flex-col gap-6 max-w-3xl">
-              {t.heroBody.map((paragraph, i) => (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+              {/* Text Column */}
+              <div className="lg:col-span-7">
                 <motion.p
-                  key={i}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ ...spring, delay: 0.4 + i * 0.1 }}
-                  className="text-lg font-sans leading-relaxed"
-                  style={{ color: "var(--va-ink-muted)" }}
+                  transition={{ ...spring, delay: 0.1 }}
+                  className="text-xs tracking-[0.35em] uppercase font-sans font-bold mb-6"
+                  style={{ color: "var(--va-accent)" }}
                 >
-                  {paragraph}
+                  {t.heroTag}
                 </motion.p>
-              ))}
+                <motion.h1
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ ...spring, delay: 0.2 }}
+                  className="text-5xl md:text-7xl lg:text-8xl leading-[1.05] mb-6"
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    fontWeight: 500,
+                    color: "var(--va-ink)",
+                    letterSpacing: language === "ar" ? "0" : "-0.03em",
+                  }}
+                >
+                  {t.heroTitle}
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ ...spring, delay: 0.3 }}
+                  className="text-xl md:text-2xl font-sans font-semibold mb-10"
+                  style={{ color: "var(--va-accent)" }}
+                >
+                  {t.heroSubtitle}
+                </motion.p>
+                <div className="flex flex-col gap-6">
+                  {t.heroBody.map((paragraph, i) => (
+                    <motion.p
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ ...spring, delay: 0.4 + i * 0.1 }}
+                      className="text-lg font-sans leading-relaxed"
+                      style={{ color: "var(--va-ink-muted)" }}
+                    >
+                      {paragraph}
+                    </motion.p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Photo Column */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ ...spring, delay: 0.4 }}
+                className="lg:col-span-5 relative group w-full"
+              >
+                <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-va-accent to-orange-500 opacity-20 blur-xl group-hover:opacity-30 transition duration-1000 pointer-events-none" />
+                <div 
+                  className="relative overflow-hidden rounded-3xl border surface-card aspect-[4/3] lg:aspect-[4/5] w-full"
+                  style={{ borderColor: "var(--va-rule)" }}
+                >
+                  <img 
+                    src="/images/about_hero_graphic.png" 
+                    alt="The Architecture of Growth"
+                    className="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100 transition duration-700 ease-out"
+                  />
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
