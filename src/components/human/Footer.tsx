@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Phone, Briefcase, Layers, Tag, BookOpen, Info, Mail, Shield, FileText } from "lucide-react";
+import { ArrowUpRight, Phone, Briefcase, Layers, Tag, BookOpen, Info, Mail, Shield, FileText, MapPin } from "lucide-react";
 import { useLanguage } from "@/lib/context/LanguageContext";
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
@@ -122,6 +122,7 @@ export function Footer() {
               { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61584695491534", external: true, icon: FacebookIcon },
               { label: "Instagram", href: "https://www.instagram.com/visionarcagency/", external: true, icon: InstagramIcon },
               { label: "+20 10 94366342", href: "tel:+201094366342", external: false, icon: Phone },
+              { label: t("contact.address"), href: "https://maps.google.com/?q=Maadi,+Cairo,+Egypt", external: true, icon: MapPin },
             ].map((link) => {
               const IconComponent = link.icon;
               return (

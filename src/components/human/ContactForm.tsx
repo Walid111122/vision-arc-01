@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, ArrowLeft, CheckCircle2, ChevronRight, XCircle, Phone } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, ChevronRight, XCircle, Phone, MapPin } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations/contact";
 import { useLanguage } from "@/lib/context/LanguageContext";
 
@@ -243,6 +243,16 @@ function ContactFormInner() {
             >
               <Phone size={16} className="text-[var(--va-accent)]" />
               <span dir="ltr">+20 10 94366342</span>
+            </a>
+            <a
+              href="https://maps.google.com/?q=Maadi,+Cairo,+Egypt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-sm font-sans w-fit hover:opacity-70 transition-opacity"
+              style={{ color: "var(--va-ink-muted)" }}
+            >
+              <MapPin size={16} className="text-[var(--va-accent)] shrink-0" />
+              <span>{t("contact.address")}</span>
             </a>
             <a
               href="https://www.facebook.com/profile.php?id=61584695491534"

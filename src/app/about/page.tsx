@@ -170,10 +170,35 @@ const copy = {
       title: "The Foundation of VisionArc",
       body: "The foundation of VisionArc is a merge between Innovation & expertise mindsets, gathering creativity, talent, and knowledge to ensure that we always hit a strategic point.",
       members: [
-        { role: "Strategy Architect", name: "Walid Al-Sharif", desc: "Aligns engineering efforts to Lifetime Value (LTV) and profit margins." },
-        { role: "Engineering Lead", name: "Ahmed Mostafa", desc: "Builds lightweight, high-performance Next.js systems and CRM backends." },
-        { role: "Media Director", name: "Ahmed Kattan", desc: "Runs high-impact, performance-oriented advertising and digital conversion loops." },
-        { role: "Creative Lead", name: "Sara El-Gamil", desc: "Drives visual luxury, humane design interfaces, and brand strategy." }
+        { role: "Strategy Architect", name: "Walid Al-Sharif", desc: "Aligns engineering efforts to Lifetime Value (LTV) and profit margins.", image: "/images/team/walid_al_sharif.png" },
+        { role: "Engineering Lead", name: "Ahmed Mostafa", desc: "Builds lightweight, high-performance Next.js systems and CRM backends.", image: "/images/team/ahmed_mostafa.png" },
+        { role: "Media Director", name: "Ahmed Kattan", desc: "Runs high-impact, performance-oriented advertising and digital conversion loops.", image: "/images/team/ahmed_kattan.png" },
+        { role: "Creative Lead", name: "Sara El-Gamil", desc: "Drives visual luxury, humane design interfaces, and brand strategy.", image: "/images/team/sara_el_gamil.png" },
+        { role: "Full-Stack Developer", name: "Mahmoud Ibrahim", desc: "Architects scalable API integrations and handles complex database structures.", image: "/images/team/mahmoud_ibrahim.png" },
+        { role: "UI/UX Designer", name: "Nour El-Din", desc: "Translates strategic client concepts into high-fidelity interactive user experiences.", image: "/images/team/nour_el_din.png" },
+        { role: "Senior Frontend Engineer", name: "Youssef Mansour", desc: "Optimizes React render trees and implements fluid web animations.", image: "/images/team/youssef_mansour.png" },
+        { role: "Operations Director", name: "Mona Abdel-Rahman", desc: "Directs daily agency operations and coordinates multi-disciplinary team resources.", image: "/images/team/mona_abdel_rahman.png" },
+        { role: "Performance Marketer", name: "Kareem El-Sawy", desc: "Manages high-yield ad spends and scales acquisition funnels.", image: "/images/team/kareem_el_sawy.png" },
+        { role: "Content Architect", name: "Farida Hegazi", desc: "Curates brand narrative frameworks and defines copy guidelines across media.", image: "/images/team/farida_hedazi.png" },
+        { role: "DevOps Lead", name: "Tarek Soliman", desc: "Directs continuous deployment pipelines and cloud infrastructure provisioning.", image: "/images/team/tarek_soliman.png" },
+        { role: "QA Automation Engineer", name: "Amira Fahmy", desc: "Establishes comprehensive end-to-end testing suites for flawless application delivery.", image: "/images/team/amira_fahmy.png" },
+        { role: "Product Strategy Lead", name: "Hany Fawzy", desc: "Aligns development timelines with customer feedback loops and market trends.", image: "/images/team/hany_fawzy.png" },
+        { role: "Data Scientist", name: "Salma Rashed", desc: "Analyzes complex tracking data to extract actionable user behavior insights.", image: "/images/team/salma_rashed.png" },
+        { role: "Mobile Engineer", name: "Sherif Hegazy", desc: "Develops native iOS and Android experiences utilizing cross-platform frameworks.", image: "/images/team/sherif_hedazy.png" },
+        { role: "SEO Specialist", name: "Dina Kamel", desc: "Engineers organic search strategies that maximize brand visibility online.", image: "/images/team/dina_kamel.png" },
+        { role: "Creative Copywriter", name: "Mostafa Khalifa", desc: "Drafts persuasive microcopy and direct-response sales copy that converts.", image: "/images/team/mostafa_khalifa.png" },
+        { role: "Cloud Solutions Architect", name: "Rania El-Ghazaly", desc: "Builds resilient multi-tenant server environments with low-latency delivery.", image: "/images/team/rania_el_ghazaly.jpg" },
+        { role: "Client Success Partner", name: "Amr Dewidar", desc: "Nurtures key institutional accounts and facilitates smooth project handoffs.", image: "/images/team/amr_dewidar.jpg" },
+        { role: "Motion Graphics Designer", name: "Omar El-Kady", desc: "Brings static layouts to life with custom animations and dynamic 3D transitions.", image: "/images/team/omar_el_kady.jpg" },
+        { role: "System Administrator", name: "Khaled Shawky", desc: "Maintains developer workspaces and monitors server health metrics 24/7.", image: "/images/team/khaled_shawky.jpg" },
+        { role: "Lead Brand Designer", name: "Jasmin Sabry", desc: "Shapes the visual language, typography, and color systems for partner brands.", image: "/images/team/jasmin_sabry.jpg" },
+        { role: "Talent & Culture Lead", name: "Leila Masri", desc: "Recruits world-class developers and builds collaborative workspace cultures.", image: "/images/team/leila_masri.jpg" },
+        { role: "Senior Project Manager", name: "Hazem Abdel-Aziz", desc: "Monitors task dependencies and ensures timely milestone delivery.", image: "/images/team/hazem_abdel_aziz.jpg" },
+        { role: "Information Security Engineer", name: "Nada El-Shamy", desc: "Enforces robust data encryption standards and audits code for vulnerabilities.", image: "/images/team/nada_el_shamy.jpg" },
+        { role: "3D Technical Artist", name: "Ziad El-Malt", desc: "Models high-end assets and interactive components for spatial environments.", image: "/images/team/ziad_el_malt.jpg" },
+        { role: "Lead Video Producer", name: "Nadine Nassar", desc: "Crafts high-production brand videos and cinematic social content.", image: "/images/team/nadine_nassar.jpg" },
+        { role: "Technical Support Lead", name: "Aly Soliman", desc: "Delivers rapid system troubleshooting and post-launch maintenance response.", image: "/images/team/aly_soliman.jpg" },
+        { role: "Brand Strategist", name: "Mayar El-Ghandour", desc: "Conducts market positioning audits and charts long-term brand goals.", image: "/images/team/mayar_el_ghandour.jpg" }
       ]
     },
     sec4Tag: "Regional Focus",
@@ -241,10 +266,35 @@ const copy = {
       title: "أساس VisionArc",
       body: "تأسس كيان VisionArc كمزيج بين عقليات الابتكار والخبرة، حيث يجمع بين الإبداع والموهبة والمعرفة لضمان تحقيق الأهداف الإستراتيجية دائماً.",
       members: [
-        { role: "إخصائي إستراتيجية النمو", name: "وليد الشريف", desc: "يربط الجهود البرمجية بالقيمة الحياتية للعميل (LTV) وهوامش الأرباح." },
-        { role: "رئيس الفريق الهندسي", name: "أحمد مصطفى", desc: "يبني أنظمة Next.js خفيفة الوزن وعالية الكفاءة وخلفيات CRM." },
-        { role: "مدير الإنتاج الإعلامي", name: "أحمد قطان", desc: "يدير الحملات الإعلانية فائقة الأداء وحلقات التحويل الرقمي." },
-        { role: "المدير الإبداعي", name: "سارة الجميل", desc: "تقود الفخامة البصرية، واجهات التصميم الإنساني، وإستراتيجية الهوية." }
+        { role: "إخصائي إستراتيجية النمو", name: "وليد الشريف", desc: "يربط الجهود البرمجية بالقيمة الحياتية للعميل (LTV) وهوامش الأرباح.", image: "/images/team/walid_al_sharif.png" },
+        { role: "رئيس الفريق الهندسي", name: "أحمد مصطفى", desc: "يبني أنظمة Next.js خفيفة الوزن وعالية الكفاءة وخلفيات CRM.", image: "/images/team/ahmed_mostafa.png" },
+        { role: "مدير الإنتاج الإعلامي", name: "أحمد قطان", desc: "يدير الحملات الإعلانية فائقة الأداء وحلقات التحويل الرقمي.", image: "/images/team/ahmed_kattan.png" },
+        { role: "المدير الإبداعي", name: "سارة الجميل", desc: "تقود الفخامة البصرية، واجهات التصميم الإنساني، وإستراتيجية الهوية.", image: "/images/team/sara_el_gamil.png" },
+        { role: "مطور ويب متكامل", name: "محمود إبراهيم", desc: "يصمم واجهات برمجة التطبيقات القابلة للتوسع ويتعامل مع قواعد البيانات المعقدة.", image: "/images/team/mahmoud_ibrahim.png" },
+        { role: "مصمم واجهات وتجربة المستخدم", name: "نور الدين", desc: "يترجم مفاهيم العملاء الإستراتيجية إلى تجارب مستخدم تفاعلية عالية الدقة.", image: "/images/team/nour_el_din.png" },
+        { role: "مهندس واجهات أمامية أول", name: "يوسف منصور", desc: "يحسن هياكل عرض React وينفذ رسوم متحركة تفاعلية سلسة للويب.", image: "/images/team/youssef_mansour.png" },
+        { role: "مدير العمليات التشغيلية", name: "منى عبد الرحمن", desc: "تدير العمليات اليومية للوكالة وتنسق موارد الفرق متعددة التخصصات.", image: "/images/team/mona_abdel_rahman.png" },
+        { role: "أخصائي تسويق الأداء", name: "كريم الصاوي", desc: "يدير الإنفاق الإعلاني عالي العائد ويوسع قنوات الاستحواذ على العملاء.", image: "/images/team/kareem_el_sawy.png" },
+        { role: "مهندس المحتوى الإستراتيجي", name: "فريدة حجازي", desc: "تصيغ أطر السرد القصصي للعلامات التجارية وتحدد إرشادات الكتابة الإعلانية.", image: "/images/team/farida_hedazi.png" },
+        { role: "رئيس هندسة DevOps", name: "طارق سليمان", desc: "يدير خطوط النشر المستمر وتهيئة البنية التحتية السحابية للأنظمة.", image: "/images/team/tarek_soliman.png" },
+        { role: "مهندس اختبار الأنظمة وأتمتتها", name: "أميرة فهمي", desc: "تؤسس حزم اختبار شاملة لضمان تقديم تطبيقات خالية تماماً من العيوب.", image: "/images/team/amira_fahmy.png" },
+        { role: "رئيس إستراتيجية المنتجات", name: "هاني فوزي", desc: "يربط جداول التطوير الزمنية بحلقات تقييم المستخدمين واتجاهات السوق.", image: "/images/team/hany_fawzy.png" },
+        { role: "عالم بيانات", name: "سلمى راشد", desc: "تحلل بيانات التتبع المعقدة لاستخلاص رؤى قابلة للتطبيق حول سلوك المستخدمين.", image: "/images/team/salma_rashed.png" },
+        { role: "مطور تطبيقات الهاتف المحمول", name: "شريف حجازي", desc: "يطور تطبيقات الهواتف الذكية لنظامي iOS وأندرويد باستخدام أطر العمل الهجينة.", image: "/images/team/sherif_hedazy.png" },
+        { role: "أخصائي تحسين محركات البحث", name: "دينا كامل", desc: "تهندس إستراتيجيات البحث المجاني لزيادة ظهور العلامة التجارية رقمياً.", image: "/images/team/dina_kamel.png" },
+        { role: "كاتب إعلاني إبداعي", name: "مصطفى خليفة", desc: "يكتب نصوصاً إقناعية قصيرة ومحتوى بيعياً مباشراً يحفز على التحول.", image: "/images/team/mostafa_khalifa.png" },
+        { role: "مهندس حلول سحابية", name: "رانيا الغزالي", desc: "تبني بيئات خوادم مرنة ومتعددة المستأجرين مع زمن استجابة منخفض.", image: "/images/team/rania_el_ghazaly.jpg" },
+        { role: "شريك نجاح العملاء", name: "عمرو دويدار", desc: "يرعى الحسابات المؤسسية الرئيسية ويسهل عمليات تسليم المشاريع بسلاسة.", image: "/images/team/amr_dewidar.jpg" },
+        { role: "مصمم رسومات متحركة", name: "عمر القاضي", desc: "يبث الحياة في التصميمات الثابتة عبر الرسوم المتحركة المخصصة والمؤثرات ثلاثية الأبعاد.", image: "/images/team/omar_el_kady.jpg" },
+        { role: "مسؤول النظم والشبكات", name: "خالد شوقي", desc: "يدير بيئات عمل المطورين ويراقب مؤشرات صحة الخوادم على مدار الساعة.", image: "/images/team/khaled_shawky.jpg" },
+        { role: "مصمم هوية تجارية رئيسي", name: "ياسمين صبري", desc: "تشكل اللغة البصرية، والخطوط، وأنظمة الألوان للعلامات التجارية الشريكة.", image: "/images/team/jasmin_sabry.jpg" },
+        { role: "رئيس الثقافة والمواهب", name: "ليلى المصري", desc: "تستقطب المطورين المتميزين وتبني بيئة عمل تعاونية وداعمة للابتكار.", image: "/images/team/leila_masri.jpg" },
+        { role: "مدير مشاريع أول", name: "حازم عبد العزيز", desc: "يتابع ترابط المهام وجداولها الزمنية لضمان تسليم مراحل المشروع في مواعيدها.", image: "/images/team/hazem_abdel_aziz.jpg" },
+        { role: "مهندس أمن المعلومات", name: "ندى الشامي", desc: "تفرض معايير تشفير قوية للبيانات وتراجع الأكواد لضمان خلوها من الثغرات.", image: "/images/team/nada_el_shamy.jpg" },
+        { role: "فنان تقني ثلاثي الأبعاد", name: "زياد الملط", desc: "يصمم نماذج ثلاثية الأبعاد ومكونات تفاعلية للبيئات الرقمية الفراغية.", image: "/images/team/ziad_el_malt.jpg" },
+        { role: "رئيس إنتاج الفيديو", name: "نادين نصار", desc: "تصنع مقاطع فيديو ترويجية عالية الجودة ومحتوى سينمائي لوسائل التواصل.", image: "/images/team/nadine_nassar.jpg" },
+        { role: "رئيس الدعم الفني التقني", name: "علي سليمان", desc: "يقدم حلولاً سريعة للمشاكل التقنية وخدمات الصيانة والدعم بعد الإطلاق.", image: "/images/team/aly_soliman.jpg" },
+        { role: "خبير إستراتيجية العلامات", name: "ميار الغندور", desc: "تجري دراسات التموضع في السوق وترسم الأهداف طويلة المدى للعلامة التجارية.", image: "/images/team/mayar_el_ghandour.jpg" }
       ]
     },
     sec4Tag: "التركيز الإقليمي",
@@ -617,6 +667,18 @@ export default function AboutPage() {
                 style={{ borderColor: "var(--va-rule)" }}
               >
                 <div>
+                  {member.image && (
+                    <div 
+                      className="relative w-full aspect-square rounded-2xl overflow-hidden mb-6 border"
+                      style={{ borderColor: "var(--va-rule)" }}
+                    >
+                      <img 
+                        src={member.image} 
+                        alt={member.name}
+                        className="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100 transition duration-700 ease-out"
+                      />
+                    </div>
+                  )}
                   <span className="block text-xs font-sans font-semibold uppercase tracking-widest mb-3 text-va-accent">
                     {member.role}
                   </span>

@@ -109,6 +109,7 @@ const dictionary: Record<Language, Record<string, string>> = {
     "contact.success.desc": "Thank you for reaching out. We will review your details and be in touch within 48 hours.",
     "contact.error.header": "Something went wrong.",
     "contact.error.btn": "Try Again",
+    "contact.address": "Maadi, Cairo, Egypt",
 
     // Footer
     "footer.desc": "A multi-disciplinary digital agency focused on branding, media buying, and bespoke web experiences. Hand-crafted, never generated.",
@@ -256,6 +257,7 @@ const dictionary: Record<Language, Record<string, string>> = {
     "contact.success.desc": "نشكرك على تواصلك معنا. سنقوم بمراجعة التفاصيل والتواصل معك خلال ٤٨ ساعة.",
     "contact.error.header": "حدث خطأ ما.",
     "contact.error.btn": "حاول مرة أخرى",
+    "contact.address": "المعادي، القاهرة، مصر",
 
     // Footer
     "footer.desc": "وكالة رقمية متكاملة متخصصة في الهويات البصرية، إدارة الحملات الإعلانية، وتطوير مواقع الويب المخصصة. أعمالنا يدوية بالكامل وخالية من التكرار.",
