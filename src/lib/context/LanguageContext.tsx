@@ -162,6 +162,13 @@ const dictionary: Record<Language, Record<string, string>> = {
     "privacy.title": "Privacy Policy",
     "privacy.updated": "Last Updated: May 28, 2026",
     "privacy.sections": "Document Sections",
+
+    // Terms of Use
+    "terms.back": "Back to Home",
+    "terms.tag": "Legal Documentation",
+    "terms.title": "Terms of Use",
+    "terms.updated": "Last Updated: June 5, 2026",
+    "terms.sections": "Document Sections",
   },
   ar: {
     // Navigation
@@ -310,6 +317,13 @@ const dictionary: Record<Language, Record<string, string>> = {
     "privacy.title": "سياسة الخصوصية",
     "privacy.updated": "آخر تحديث: ٢٨ مايو ٢٠٢٦",
     "privacy.sections": "أقسام الوثيقة",
+
+    // Terms of Use
+    "terms.back": "العودة للرئيسية",
+    "terms.tag": "الوثائق القانونية",
+    "terms.title": "شروط الاستخدام",
+    "terms.updated": "آخر تحديث: ٥ يونيو ٢٠٢٦",
+    "terms.sections": "أقسام الوثيقة",
   },
 };
 

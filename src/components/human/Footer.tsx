@@ -158,7 +158,7 @@ export function Footer() {
               <Shield size={12} className="text-[var(--va-accent)] opacity-80" />
               {t("footer.privacy")}
             </Link>
-            <Link href="#" className="text-xs font-sans hover:underline flex items-center gap-1.5" style={{ color: "var(--va-ink-muted)" }}>
+            <Link href="/terms" className="text-xs font-sans hover:underline flex items-center gap-1.5" style={{ color: "var(--va-ink-muted)" }}>
               <FileText size={12} className="text-[var(--va-accent)] opacity-80" />
               {t("footer.terms")}
             </Link>
