@@ -105,6 +105,7 @@ export function Nav() {
               onClick={() => setLanguage(language === "en" ? "ar" : "en")}
               className="text-xs font-semibold py-1 px-2 border border-[var(--va-rule)] rounded-sm hover:border-[var(--va-accent)] hover:text-[var(--va-accent)] transition-colors uppercase tracking-widest text-[var(--va-ink)] opacity-80 hover:opacity-100"
               style={{ minWidth: "48px" }}
+              suppressHydrationWarning
             >
               {language === "en" ? "عربي" : "EN"}
             </button>
@@ -179,6 +180,7 @@ export function Nav() {
               setMenuOpen(false);
             }}
             className="text-sm font-semibold py-1.5 px-3 border border-[var(--va-rule)] rounded-sm hover:border-[var(--va-accent)] hover:text-[var(--va-accent)] transition-colors uppercase tracking-widest text-[var(--va-ink)]"
+            suppressHydrationWarning
           >
             {language === "en" ? "عربي" : "EN"}
           </button>
